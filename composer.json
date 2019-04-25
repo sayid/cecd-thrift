@@ -1,5 +1,5 @@
 {
-    "name": "ce/sdk-rpcs",
+    "name": "lumen/sdk-rpcs",
     "description": "gouuse core files",
     "type": "library",
     "version": "2.1.1",
