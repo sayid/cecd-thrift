@@ -1,0 +1,20 @@
+namespace php Ce.Sdk.Rpc.Base
+
+struct ResponseData {
+  1: required i32 code,
+  2: required string data,
+  3: optional string msg,
+  4: optional string debug,
+  5: optional string ex
+}
+
+exception InvalidException {
+	1:required i32 code,
+	2:required string ex
+}
+
+service RpcService {
+     ResponseData callRpc(1:string classname 2:string method, 3:string arglist, 4:string extra) throws (1:InvalidException ex)
+}
+## thrift -out ./gen-php -r -gen php:server  RpcService.thfit
+##  thrift -out ./gen-php -r -gen php  RpcService.thfit

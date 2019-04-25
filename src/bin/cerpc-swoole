@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+$root = substr(dirname(__DIR__), 0, -22);
+
+require $root."vendor/autoload.php";
+
+Ce\Sdk\Rpc\Command::main($root, $argv);

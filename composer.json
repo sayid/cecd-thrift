@@ -1,0 +1,32 @@
+{
+    "name": "ce/sdk-rpcs",
+    "description": "gouuse core files",
+    "type": "library",
+    "version": "2.1.1",
+    "bin": [
+      "src/bin/cerpc-swoole"
+    ],
+    "require": {
+        "php": ">=7.1",
+        "apache/thrift" : "0.12.0"
+    },
+    "require-dev": {
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Ce\\Sdk\\Rpc\\": "src/rpc",
+            "Ce\\Sdk\\Rpc\\Base\\": "src/thrift/gen-php/Ce/Sdk/Rpc/Base"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "zyb",
+            "email": "449063862@qq.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}

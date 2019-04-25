@@ -1,0 +1,21 @@
+include "../company.thrift"
+include "../member.thrift"
+namespace php Ce.Sdk.Rpc.AuthCenter
+
+struct ResponseData {
+  1: required i32 code,
+  2:map<t1,t2> data = {"member":member member, "company":member company}
+  3:string msg
+}
+
+exception InvalidException {
+	1:required i32 code,
+	2:required string ex,
+	3:string msg
+}
+
+service AccountLib {
+     ResponseData check(1:string token) throws (1:InvalidException ex)
+}
+## thrift -out ./gen-php -r -gen php:server  RpcService.thfit
+##  thrift -out ./gen-php -r -gen php  RpcService.thfit
