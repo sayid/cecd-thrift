@@ -9,16 +9,14 @@
 namespace Thrift\CeCd\Sdk\Core\Client;
 
 
-use Cecd\Sdk\Rpc\Services\RpcModuleIf;
-use GouuseCore\Exceptions\GouuseRpcException;
+use Thrift\CeCd\Sdk\Core\Services\RpcModuleIf;
 use Thrift\Protocol\TBinaryProtocol;
 use Thrift\Transport\TSocket;
 use Thrift\Transport\TFramedTransport;
 use Thrift\Exception\TException;
-use Cecd\Sdk\Rpc\Services\RpcInterface;
 use Thrift\CeCd\Sdk\RpcServiceClient;
 
-class Rpc implements RpcInterface
+class Rpc
 {
     private $rpcClass;
 
