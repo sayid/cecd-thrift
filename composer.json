@@ -1,5 +1,5 @@
 {
-    "name": "cecd/rpc-sdk",
+    "name": "cecd/thrift",
     "description": "lumen rpc files",
     "type": "library",
     "version": "2.1.1",
