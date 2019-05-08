@@ -1,6 +1,6 @@
 {
     "name": "cecd/thrift",
-    "description": "lumen rpc files",
+    "description": "thrift java/php rpc files",
     "type": "library",
     "version": "2.1.1",
     "require": {
