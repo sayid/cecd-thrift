@@ -22,6 +22,17 @@ trait RpcModuleTrait
     }
 
     /**
+     * 检查服务器，返回ok标示正常
+     * @return mixed|string
+     * @throws \Thrift\Exception\TException
+     */
+    public function ping()
+    {
+        $rpc = new Rpc("ping", $this);
+        return $rpc->callRpc("ping", "ping", []);
+    }
+
+    /**
      * 魔术方法自动调用rpc类
      * @param $class
      * @return Rpc
