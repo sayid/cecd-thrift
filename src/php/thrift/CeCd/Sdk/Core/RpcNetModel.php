@@ -6,7 +6,7 @@
  * Time: 17:32
  */
 
-namespace GouuseCore\Rpcs;
+namespace Thrift\CeCd\Sdk\Core;
 
 
 class RpcModel

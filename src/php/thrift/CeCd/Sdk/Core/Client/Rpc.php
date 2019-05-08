@@ -6,7 +6,7 @@
  * Time: 11:41
  */
 
-namespace Cecd\Sdk\Rpc\Client;
+namespace Thrift\CeCd\Sdk\Core\Client;
 
 
 use Cecd\Sdk\Rpc\Services\RpcModuleIf;

@@ -6,9 +6,10 @@
  * Time: 15:21
  */
 
-namespace Cecd\Sdk\Rpc\Services;
+namespace Thrift\CeCd\Sdk\Core\Services;
 
-use Cecd\Sdk\Rpc\Client\Rpc;
+namespace Thrift\CeCd\Sdk\Core\Client\Rpc;
+
 trait RpcModuleTrait
 {
     private $host;

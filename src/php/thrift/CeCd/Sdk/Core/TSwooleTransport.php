@@ -1,5 +1,5 @@
 <?php
-namespace Cecd\Sdk\Rpc;
+namespace Thrift\CeCd\Sdk\Core;
 
 use Thrift\Exception\TTransportException;
 use Thrift\Factory\TStringFuncFactory;

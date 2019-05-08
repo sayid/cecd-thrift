@@ -6,7 +6,7 @@
  * Time: 16:42
  */
 
-namespace Cecd\Sdk\Rpc;
+namespace Thrift\CeCd\Sdk\Core;
 use GouuseCore\Libraries\CodeLib;
 
 use Thrift\CeCd\Sdk\RpcServiceIf;

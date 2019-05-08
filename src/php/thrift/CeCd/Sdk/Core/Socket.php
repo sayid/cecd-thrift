@@ -6,7 +6,7 @@
  * Time: 15:57
  */
 
-namespace Cecd\Sdk\Rpc;
+namespace Thrift\CeCd\Sdk\Cor;
 
 use Thrift;
 use Thrift\Exception\TTransportException;

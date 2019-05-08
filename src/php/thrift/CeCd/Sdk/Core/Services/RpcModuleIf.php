@@ -6,7 +6,7 @@
  * Time: 15:21
  */
 
-namespace Cecd\Sdk\Rpc\Services;
+namespace Thrift\CeCd\Sdk\Core\Services;
 
 
 interface RpcModuleIf

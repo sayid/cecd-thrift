@@ -6,7 +6,7 @@
  * Date: 2019/3/4
  * Time: 16:27
  */
-namespace Cecd\Sdk\Rpc\Client;
+namespace Thrift\CeCd\Sdk\Core\Client;
 
 use Thrift\Transport\TSocket;
 use Thrift\Transport\TFramedTransport;

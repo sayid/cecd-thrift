@@ -12,7 +12,6 @@
     },
     "autoload": {
         "psr-4": {
-            "Cecd\\Sdk\\Rpc\\": "src/php/Rpc",
             "Thrift\\CeCd\\Sdk\\": "src/php/thrift/CeCd/Sdk"
         },
         "files": [

@@ -6,7 +6,7 @@
  * Time: 11:50
  */
 
-namespace Cecd\Sdk\Rpc\Services;
+namespace Thrift\CeCd\Sdk\Core\Services;
 
 /**
  * 定义rpc基础接口，所有rpc类都要继承
