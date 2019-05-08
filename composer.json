@@ -1,5 +1,5 @@
 {
-    "name": "cecd/thrift",
+    "name": "cecd/rpc-sdk",
     "description": "thrift java/php rpc files",
     "type": "library",
     "version": "2.1.1",
