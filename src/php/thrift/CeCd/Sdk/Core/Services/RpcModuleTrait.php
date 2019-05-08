@@ -8,8 +8,6 @@
 
 namespace Thrift\CeCd\Sdk\Core\Services;
 
-namespace Thrift\CeCd\Sdk\Core\Client\Rpc;
-
 trait RpcModuleTrait
 {
     private $host;
