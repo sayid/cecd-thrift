@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: RpcTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.096 s <<< FAILURE! - in RpcTest
+testAccountLib(RpcTest)  Time elapsed: 0.02 s  <<< ERROR!
+java.lang.reflect.UndeclaredThrowableException
+	at RpcTest.testAccountLib(RpcTest.java:18)
+Caused by: java.lang.ClassNotFoundException: com/cecd/sdk/rpc//RpcConfig
+	at RpcTest.testAccountLib(RpcTest.java:18)
+

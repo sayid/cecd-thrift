@@ -1,11 +1,8 @@
 {
-    "name": "lumen/sdk-rpcs",
-    "description": "gouuse core files",
+    "name": "cecd/rpc-sdk",
+    "description": "lumen rpc files",
     "type": "library",
     "version": "2.1.1",
-    "bin": [
-      "src/bin/cerpc-swoole"
-    ],
     "require": {
         "php": ">=7.1",
         "apache/thrift" : "0.12.0"
@@ -15,11 +12,11 @@
     },
     "autoload": {
         "psr-4": {
-            "Ce\\Sdk\\Rpc\\": "src/rpc",
-            "Ce\\Sdk\\Rpc\\Base\\": "src/thrift/gen-php/Ce/Sdk/Rpc/Base"
+            "Cecd\\Sdk\\Rpc\\": "src/php/Rpc",
+            "Thrift\\CeCd\\Sdk\\": "src/php/thrift/CeCd/Sdk"
         },
         "files": [
-            "src/helpers.php"
+            "src/php/helpers.php"
         ]
     },
     "authors": [

@@ -1,8 +1,9 @@
-namespace php Ce.Sdk.Rpc.Base
+namespace java com.cecd.sdk.thrift
+namespace php Thrift.CeCd.Sdk
 
 struct ResponseData {
   1: required i32 code,
-  2: required string data,
+  2: optional string data,
   3: optional string msg,
   4: optional string debug,
   5: optional string ex
@@ -16,5 +17,6 @@ exception InvalidException {
 service RpcService {
      ResponseData callRpc(1:string classname 2:string method, 3:string arglist, 4:string extra) throws (1:InvalidException ex)
 }
-## thrift -out ./gen-php -r -gen php:server  RpcService.thfit
-##  thrift -out ./gen-php -r -gen php  RpcService.thfit
+## thrift -out ../php -r -gen php:server  RpcService.thfit
+##  thrift -out ../php -r -gen php  RpcService.thfit
+##  thrift -out ../java/src/main/java -r -gen java  RpcService.thfit
