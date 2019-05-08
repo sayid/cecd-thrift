@@ -8,6 +8,8 @@
 
 namespace Thrift\CeCd\Sdk\Core\Services;
 
+use Thrift\CeCd\Sdk\Core\Client\Rpc;
+
 trait RpcModuleTrait
 {
     private $host;
@@ -33,12 +35,6 @@ trait RpcModuleTrait
             $class_load = $packge . "\Models\\".$class;
         }
         return new Rpc($class_load, $this);;
-    }
-
-    public function  getRpc($classname) : RpcInterface
-    {
-        $proxy = new Rpc($classname, $this);
-        return $proxy;
     }
 
     /**
