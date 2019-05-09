@@ -15,6 +15,7 @@ use Thrift\Transport\TSocket;
 use Thrift\Transport\TFramedTransport;
 use Thrift\Exception\TException;
 use Thrift\CeCd\Sdk\RpcServiceClient;
+use Thrift\CeCd\Sdk\Core\RpcException;
 
 class Rpc
 {
@@ -54,7 +55,7 @@ class Rpc
                     $res->data = ceRpcDecode($res->data);
                     return $res->data;
                 } elseif ($res->code) {
-                    throw new GouuseException(['code' => $res->code, 'msg' => $res->msg , 'exception' => $res->ex]);
+                    throw new RpcException(['code' => $res->code, 'msg' => $res->msg , 'exception' => $res->ex]);
                 }
             } catch (TException $tx) {
                 if ($i == 1) {
