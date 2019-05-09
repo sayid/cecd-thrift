@@ -42,8 +42,8 @@ class Rpc
         return [
             'member_id' => $GOUUSE_MEMBER_INFO['member_id'] ?? 0,
             'company_id' => $GOUUSE_MEMBER_INFO['company_id'] ?? 0,
-            'GOUUSE_XX_V3_MEMBER_INFO' => $GOUUSE_MEMBER_INFO,
-            'GOUUSE_XX_V3_COMPANY_INFO' => $GOUUSE_COMPANY_INFO,
+            'member_info' => $GOUUSE_MEMBER_INFO,
+            'company_info' => $GOUUSE_COMPANY_INFO,
             'from_service_id' => env('SERVICE_ID')//来自哪个服务
         ];
     }
