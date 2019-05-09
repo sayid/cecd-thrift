@@ -126,9 +126,14 @@ class Rpc
         } else {
             $classpath = app()->offsetGet($this->rpcClass);
         }
+        if (env('APP_DEBUG') == true && function_exists('getGouuseCore')) {
+            getGouuseCore()->LogLib->rpc_count += 1;
+        }
         $start = microtime_float();
         $res = $this->callRpc($classpath, $name, $arguments);
-        getGouuseCore()->LogLib->optimization_list[] = microtime_float() - $start . "ms rpc:".$classpath."->".$name."()";
+        if (function_exists('getGouuseCore')) {
+            getGouuseCore()->LogLib->optimization_list[] = microtime_float() - $start . "ms rpc:" . $classpath . "->" . $name . "()";
+        }
         return $res;
     }
 }
