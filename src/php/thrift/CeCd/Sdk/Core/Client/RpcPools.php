@@ -52,6 +52,7 @@ class RpcPools
         }
         if (empty($transport)) {
             $socket = new TSocket($host, $port);
+            $socket->setRecvTimeout(10000);//十秒超时
             $transport = new TFramedTransport($socket);
             $transport->open();
         }
