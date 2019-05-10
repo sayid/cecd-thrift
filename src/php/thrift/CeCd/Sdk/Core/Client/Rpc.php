@@ -86,43 +86,6 @@ class Rpc
         }
     }
 
-    /**
-     * 放入连接池
-     * @param $host
-     * @param $port
-     * @param $transport
-     */
-    private function push($host, $port, $transport)
-    {
-        if (!isset(self::$pools[md5($host.$port)])) {
-            self::$pools[md5($host . $port)] = new \SplQueue();
-        }
-        self::$pools[md5($host . $port)]->push($transport);
-    }
-
-    private function get($host, $port)
-    {
-        if (!isset(self::$pools[md5($host.$port)])) {
-            self::$pools[md5($host . $port)] = new \SplQueue();
-        } else {
-            $transport = self::$pools[md5($host . $port)]->get();
-        }
-        if (empty($transport)) {
-            $socket = new TSocket($host, $port);
-            $transport = new TFramedTransport($socket);
-        }
-        return $transport;
-    }
-
-    public function __destruct()
-    {
-       foreach (self::$pools as $pools) {
-            foreach ($pools as $transport) {
-                $transport->close();
-            }
-       }
-    }
-
     public function __call($name, $arguments)
     {
         if (!app()->offsetExists($this->rpcClass)) {
