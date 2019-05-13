@@ -23,6 +23,8 @@ class Rpc
 
     private $rpcModule;
 
+    private $extraData;
+
     private static $pools = [];
 
 
@@ -31,6 +33,11 @@ class Rpc
     {
         $this->rpcClass = $classname;
         $this->rpcModule = $rpcModule;
+    }
+
+    public function setExtraData(array $extraData = [])
+    {
+        $this->extraData = $extraData;
     }
 
     public function preExtraData()
@@ -52,8 +59,12 @@ class Rpc
     {
         $host = $this->rpcModule->getHost();
         $port = $this->rpcModule->getPort();
-        $extra = $this->preExtraData();
-        $extra = ceRpcEncode($extra);
+        if ($this->extraData) {
+            $extra = ceRpcEncode($this->extraData);
+        } else {
+            $extra = $this->preExtraData();
+        }
+
         $args = ceRpcEncode($args);
         $RpcPools = RpcPools::getInstance();
         $i = 2;//如果发生异常 重试一次
