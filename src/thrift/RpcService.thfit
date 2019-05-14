@@ -6,7 +6,8 @@ struct ResponseData {
   2: optional string data,
   3: optional string msg,
   4: optional string debug,
-  5: optional string ex
+  5: optional string ex,
+  5: optional string strace
 }
 
 exception InvalidException {
