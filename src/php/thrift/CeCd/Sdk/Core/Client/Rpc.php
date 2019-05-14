@@ -8,7 +8,7 @@
 
 namespace Thrift\CeCd\Sdk\Core\Client;
 
-
+use Thrift\CeCd\Sdk\Core\Services\RpcModuleIf;
 use Thrift\Protocol\TBinaryProtocol;
 use Thrift\Transport\TSocket;
 use Thrift\Transport\TFramedTransport;
@@ -28,7 +28,7 @@ class Rpc
 
 
 
-    public function __construct($classname,$rpcModule)
+    public function __construct($classname,RpcModuleIf $rpcModule)
     {
         $this->rpcClass = $classname;
         $this->rpcModule = $rpcModule;
