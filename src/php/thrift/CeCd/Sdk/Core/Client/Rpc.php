@@ -44,7 +44,7 @@ class Rpc
     {
         $host = $this->rpcModule->getHost();
         $port = $this->rpcModule->getPort();
-
+        $this->extraData['self_id'] = $this->rpcModule->getServiceId();
         $extra = ceRpcEncode($this->extraData);
 
         $args = ceRpcEncode($args);
