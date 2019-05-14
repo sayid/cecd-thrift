@@ -87,4 +87,9 @@ trait RpcModuleTrait
     {
         $this->port = $port;
     }
+
+    public function getServiceId()
+    {
+        return $this->serviceId;
+    }
 }
