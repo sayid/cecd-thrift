@@ -33,10 +33,11 @@ if (! function_exists('checkOpenMethod')) {
             //老版本兼容
             return true;
         }
-        if (!class_exists($class_load)) {
+        $class_load = ltrim($class_load, "\\");
+        if (!class_exists($class_load) && !class_exists("\\".$class_load)) {
             return false;
         }
-        $class_load = ltrim($class_load, "\\");
+
         $rows = config("service.rpc");
         if (!isset($rows[$class_load])) {
             return false;
