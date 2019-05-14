@@ -35,27 +35,27 @@ if (! function_exists('checkOpenMethod')) {
         }
         $class_load = ltrim($class_load, "\\");
         if (!class_exists($class_load) && !class_exists("\\".$class_load)) {
-            return false;
+            return -1;
         }
 
         $rows = config("service.rpc");
         if (!isset($rows[$class_load])) {
-            return false;
+            return -2;
         } else {
             if ($rows[$class_load] == "*") {
                 return true;
             } elseif (is_array($rows[$class_load]) && !isset($rows[$class_load][$method])) {
-                return false;
+                return -3;
             }
         }
         if (!method_exists($class_load, $method)) {
-            return false;
+            return -4;
         }
         $method = new \ReflectionMethod($class_load, $method);
         if ($method->isPublic() && !$method->isStatic()) {
             return true;
         }
-        return false;
+        return -3;
     }
 }
 
