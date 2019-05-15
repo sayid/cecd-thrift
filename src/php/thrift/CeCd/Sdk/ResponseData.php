@@ -46,6 +46,11 @@ class ResponseData
             'isRequired' => false,
             'type' => TType::STRING,
         ),
+        6 => array(
+            'var' => 'strace',
+            'isRequired' => false,
+            'type' => TType::STRING,
+        ),
     );
 
     /**
@@ -68,6 +73,10 @@ class ResponseData
      * @var string
      */
     public $ex = null;
+    /**
+     * @var string
+     */
+    public $strace = null;
 
     public function __construct($vals = null)
     {
@@ -86,6 +95,9 @@ class ResponseData
             }
             if (isset($vals['ex'])) {
                 $this->ex = $vals['ex'];
+            }
+            if (isset($vals['strace'])) {
+                $this->strace = $vals['strace'];
             }
         }
     }
@@ -144,6 +156,13 @@ class ResponseData
                         $xfer += $input->skip($ftype);
                     }
                     break;
+                case 6:
+                    if ($ftype == TType::STRING) {
+                        $xfer += $input->readString($this->strace);
+                    } else {
+                        $xfer += $input->skip($ftype);
+                    }
+                    break;
                 default:
                     $xfer += $input->skip($ftype);
                     break;
@@ -181,6 +200,11 @@ class ResponseData
         if ($this->ex !== null) {
             $xfer += $output->writeFieldBegin('ex', TType::STRING, 5);
             $xfer += $output->writeString($this->ex);
+            $xfer += $output->writeFieldEnd();
+        }
+        if ($this->strace !== null) {
+            $xfer += $output->writeFieldBegin('strace', TType::STRING, 6);
+            $xfer += $output->writeString($this->strace);
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();
