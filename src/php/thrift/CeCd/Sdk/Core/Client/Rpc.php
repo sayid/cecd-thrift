@@ -48,7 +48,7 @@ class Rpc
 
         $args = ceRpcEncode($args);
         $RpcPools = RpcPools::getInstance();
-        $i = 2;//如果发生异常 重试一次
+        $i = 1;//如果发生异常 重试一次
         while ($i--) {
             try {
                 //从连接池中取出
