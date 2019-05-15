@@ -38,7 +38,7 @@ class RpcPools
         if (!isset($this->pools[md5($host.$port)])) {
             $this->pools[md5($host . $port)] = new \SplQueue();
         }
-        //$this->pools[md5($host . $port)]->push($transport);
+        $this->pools[md5($host . $port)]->push($transport);
     }
 
     public function get($host, $port) : TFramedTransport

@@ -57,8 +57,8 @@ class Rpc
                 $client = new RpcServiceClient($protocol);
                 $res = $client->callRpc($classname, $method, $args, $extra);
                 //用完之后放回连接池中
-                $RpcPools->push($host, $port, $transport);
-                //$transport->close();
+                //$RpcPools->push($host, $port, $transport);
+                $transport->close();
                 if (isset($res->data)) {
                     $res->data = ceRpcDecode($res->data);
                     return $res->data;
