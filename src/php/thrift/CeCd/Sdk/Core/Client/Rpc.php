@@ -63,7 +63,7 @@ class Rpc
                     $res->data = ceRpcDecode($res->data);
                     return $res->data;
                 } elseif ($res->code) {
-                    throw new RpcArrayException(['code' => $res->code, 'msg' => $res->msg , 'exception' => $res->ex]);
+                    throw new RpcArrayException(['code' => $res->code, 'msg' => $res->msg , 'exception' => $res->ex, "strace" => $res->strace]);
                 }
             } catch (TException $tx) {
                 if ($i == 1) {
