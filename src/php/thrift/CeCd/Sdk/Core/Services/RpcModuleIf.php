@@ -15,9 +15,11 @@ interface RpcModuleIf
 
     public function getPort() : int;
 
-    public function setHost(string $host);
+    public function setHost(string $host) : RpcModuleIf;
 
-    public function setPort(int $port);
+    public function setPort(int $port) : RpcModuleIf;
 
     public function getServiceId(): int;
+
+    public function getConfigKey() : string;
 }
