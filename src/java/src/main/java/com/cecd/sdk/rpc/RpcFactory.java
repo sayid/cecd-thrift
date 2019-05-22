@@ -1,8 +1,6 @@
 package com.cecd.sdk.rpc;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cecd.sdk.rpc.authcenter.AuthCenter;
-import com.cecd.sdk.rpc.usercenter.UserCenter;
 import com.cecd.sdk.thrift.ResponseData;
 import com.cecd.sdk.thrift.RpcService;
 import org.apache.thrift.protocol.TBinaryProtocol;
