@@ -48,12 +48,12 @@ public class RpcFactory {
             RpcNetModel rpcModel = new RpcNetModel();
             Class<?>[] classes = proxy.getClass().getInterfaces();
             String className = classes[0].getName();
-            String packagename = classes[0].getPackage().getName();
-            String current_package = this.getClass().getPackage().getName();
+            String packageName = classes[0].getPackage().getName();
+            String currentPackage = this.getClass().getPackage().getName();
 
-            int pos = current_package.length() + 1;
-            int pos_end = packagename.indexOf(".", pos);
-            String module = packagename.substring(pos, pos_end);
+            int pos = currentPackage.length() + 1;
+            int pos_end = packageName.indexOf(".", pos);
+            String module = packageName.substring(pos, pos_end);
             RpcModuleIf rpcLoader = services.get(module);
             if (null == rpcLoader.getHost() || rpcLoader.getHost().length() == 0) {
                 throw new Exception(rpcLoader.getClass().getName()+"未配置host");
