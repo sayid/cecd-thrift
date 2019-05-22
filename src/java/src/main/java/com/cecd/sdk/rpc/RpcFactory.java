@@ -35,6 +35,14 @@ public class RpcFactory {
         services.put(rpc.getClass().getSimpleName().toLowerCase(), rpc);
     }
 
+    /**
+     * 设置公共配置
+     * @param newEnvironment
+     */
+    public static void setEnvironment(Environment newEnvironment) {
+        environment = newEnvironment;
+    }
+
     private static InvocationHandler handler = new InvocationHandler() {
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable, Exception {
