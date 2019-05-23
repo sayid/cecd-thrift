@@ -23,15 +23,9 @@ public abstract class RpcModuleAbstract  {
             RpcNetModel rpcModel = new RpcNetModel();
             Class<?>[] classes = proxy.getClass().getInterfaces();
             String className = classes[0].getName();
-            String packagename = classes[0].getPackage().getName();
-            String current_package = this.getClass().getPackage().getName();
 
-            int pos = current_package.length() + 1;
-            int pos_end = packagename.indexOf(".", pos);
-            String module = packagename.substring(pos, pos_end);
-            RpcModuleIf rpcLoader = RpcFactory.getService(module);
-
-
+            RpcModuleIf rpcLoader = RpcFactory.getServiceByRpc(className);
+            System.out.println(rpcLoader.getHost());
             if (null == rpcLoader.getHost() || rpcLoader.getHost().length() == 0) {
                 //如果没有设置host和port则读取公共配置中的
                 String newHost = RpcFactory.getEnvironment().getProperty("rpc."+rpcLoader.getServiceName()+".host");
@@ -78,6 +72,8 @@ public abstract class RpcModuleAbstract  {
 
     @SuppressWarnings("unchecked")
     public <T> T getRpc(Class<T> clazz) {
+        //映射rpc接口对应的rpc模块名称
+        RpcFactory.setRpcMap(clazz.getName(), this.getClass().getName());
         Object object = (T) Proxy.newProxyInstance(clazz.getClassLoader(),
                 new Class[]{clazz}, handler );
         return (T)object;

@@ -1,7 +1,8 @@
-import com.alibaba.fastjson.JSONObject;
+import com.cecd.sdk.examples.usercenter.Libraries.MemberLib;
+import com.cecd.sdk.examples.usercenter.Models.MemberModel;
+import com.cecd.sdk.examples.usercenter.UserCenter;
 import com.cecd.sdk.rpc.RpcFactory;
-import com.cecd.sdk.rpc.authcenter.AuthCenter;
-import com.cecd.sdk.rpc.authcenter.Libraries.AccountLib;
+import org.apache.catalina.User;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,19 +14,10 @@ public class RpcTest {
     }
 
     @Test
-    public void testAccountLib() {
-
-        AuthCenter authCenter = new AuthCenter("127.0.0.1", 8090);
-        AccountLib accountLib = authCenter.getRpc(AccountLib.class);
-        JSONObject map = null;
-        try {
-            map = accountLib.check("test");
-            System.out.println(map.get("data"));
-            JSONObject member = (JSONObject)map.get("data");
-            System.out.println(member.get("member_info"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("网络错误");
-        }
+    public void testUser() {
+        UserCenter userCenter = RpcFactory.getInstance(UserCenter.class);
+        userCenter.setHost("192.168.5.190").setPort(1005);
+        MemberLib memberLib = userCenter.getRpc(MemberLib.class);
+        MemberModel member = memberLib.getSimpleMemberById(1);
     }
 }
