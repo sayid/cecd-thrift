@@ -33,7 +33,17 @@ public abstract class RpcModuleAbstract  {
 
 
             if (null == rpcLoader.getHost() || rpcLoader.getHost().length() == 0) {
-                throw new Exception(rpcLoader.getClass().getName()+"未配置host");
+                //如果没有设置host和port则读取公共配置中的
+                String newHost = RpcFactory.getEnvironment().getProperty("rpc."+rpcLoader.getServiceName()+".host");
+                if (null == newHost) {
+                    throw new NullPointerException("rpc."+rpcLoader.getServiceName()+".host is undefined");
+                }
+                String newPort = RpcFactory.getEnvironment().getProperty("rpc."+rpcLoader.getServiceName()+".port");
+                if (null == newHost) {
+                    throw new NullPointerException("rpc."+rpcLoader.getServiceName()+".port is undefined");
+                }
+                rpcLoader.setHost(newHost);
+                rpcLoader.setPort(Integer.valueOf(newPort));
             }
             RpcDoc rpcDoc = classes[0].getAnnotation(RpcDoc.class);
             if (rpcDoc == null) {
