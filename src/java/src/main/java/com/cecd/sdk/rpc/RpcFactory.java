@@ -41,6 +41,10 @@ public class RpcFactory {
         environment = newEnvironment;
     }
 
+    public static Environment getEnvironment() {
+        return environment;
+    }
+
     private static InvocationHandler handler = new InvocationHandler() {
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable, Exception {
