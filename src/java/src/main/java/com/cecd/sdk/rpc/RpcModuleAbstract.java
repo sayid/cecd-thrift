@@ -28,6 +28,9 @@ public abstract class RpcModuleAbstract  {
             System.out.println(rpcLoader.getHost());
             if (null == rpcLoader.getHost() || rpcLoader.getHost().length() == 0) {
                 //如果没有设置host和port则读取公共配置中的
+                if (null == RpcFactory.getEnvironment()) {
+                    throw new NullPointerException("Environment is null");
+                }
                 String newHost = RpcFactory.getEnvironment().getProperty("rpc."+rpcLoader.getServiceName()+".host");
                 if (null == newHost) {
                     throw new NullPointerException("rpc."+rpcLoader.getServiceName()+".host is undefined");
