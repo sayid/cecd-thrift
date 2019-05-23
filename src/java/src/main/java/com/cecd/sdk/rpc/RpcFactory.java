@@ -45,7 +45,7 @@ public class RpcFactory {
         return environment;
     }
 
-    private static InvocationHandler handler = new InvocationHandler() {
+    /*private static InvocationHandler handler = new InvocationHandler() {
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable, Exception {
 
@@ -97,5 +97,5 @@ public class RpcFactory {
     public static <T> T getInstance(Class<T> clazz) {
         return (T) Proxy.newProxyInstance(clazz.getClassLoader(),
                 new Class[]{clazz}, handler );
-    }
+    }*/
 }
