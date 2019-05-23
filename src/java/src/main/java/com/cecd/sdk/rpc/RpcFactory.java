@@ -24,13 +24,25 @@ public class RpcFactory {
      */
     private static HashMap<String, RpcModuleIf> services = new HashMap();
 
-    public static RpcModuleIf getService(String servicename)
+    private static HashMap<String, String> rpcMap = new HashMap();
+
+    public static RpcModuleIf getServiceByRpc(String rpcName)
     {
-        return services.get(servicename);
+        String service = rpcMap.get(rpcName.toLowerCase());
+        return services.get(service.toLowerCase());
     }
 
     public static void addService(RpcModuleIf rpc) {
-        services.put(rpc.getClass().getSimpleName().toLowerCase(), rpc);
+        services.put(rpc.getClass().getName().toLowerCase(), rpc);
+    }
+
+    /**
+     * 映射rpc类对应的rpc模块
+     * @param rpcName
+     * @param rpcServer
+     */
+    public static void setRpcMap(String rpcName,String rpcServer) {
+        rpcMap.put(rpcName.toLowerCase(), rpcServer.toLowerCase());
     }
 
     /**
@@ -45,57 +57,25 @@ public class RpcFactory {
         return environment;
     }
 
-    /*private static InvocationHandler handler = new InvocationHandler() {
-
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable, Exception {
-
-            RpcNetModel rpcModel = new RpcNetModel();
-            Class<?>[] classes = proxy.getClass().getInterfaces();
-            String className = classes[0].getName();
-            String packageName = classes[0].getPackage().getName();
-            String currentPackage = this.getClass().getPackage().getName();
-
-            int pos = currentPackage.length() + 1;
-            int pos_end = packageName.indexOf(".", pos);
-            String module = packageName.substring(pos, pos_end);
-            RpcModuleIf rpcLoader = services.get(module);
-            if (null == rpcLoader.getHost() || rpcLoader.getHost().length() == 0) {
-                throw new Exception(rpcLoader.getClass().getName()+"未配置host");
-            }
-            RpcDoc rpcDoc = classes[0].getAnnotation(RpcDoc.class);
-            if (rpcDoc == null) {
-                throw new NullPointerException("未定义rpc"+className);
-            }
-            String classpath = rpcDoc.value();
-            System.out.println(classpath);
-            TTransport transport = null;
-            ResponseData result = null;
-            if (rpcLoader.getTimeout() > 0) {
-                System.out.println("rpc->host:" + rpcLoader.getHost() + " port:" + rpcLoader.getPort() + " timeout:" + rpcLoader.getTimeout());
-                transport = new TFramedTransport(new TSocket(rpcLoader.getHost(), rpcLoader.getPort(), rpcLoader.getTimeout()));
-            } else {
-                System.out.println("rpc->host:" + rpcLoader.getHost() + " port:" + rpcLoader.getPort());
-                transport = new TFramedTransport(new TSocket(rpcLoader.getHost(), rpcLoader.getPort()));
-            }
-            // 协议要和服务端一致
-            TProtocol protocol = new TBinaryProtocol(transport);
-
-            RpcService.Client client = new RpcService.Client(protocol);
-            transport.open();
-
-            result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), "");
-            transport.close();
-            System.out.println("Thrift client result=" + result);
-
-            Type type = method.getReturnType();
-            System.out.println(method.getReturnType());
-            return JSONObject.parseObject(result.getData(), type);
-        }
-    };
-
-    @SuppressWarnings("unchecked")
     public static <T> T getInstance(Class<T> clazz) {
-        return (T) Proxy.newProxyInstance(clazz.getClassLoader(),
-                new Class[]{clazz}, handler );
-    }*/
+        if (RpcFactory.services.containsKey(clazz.getClass().getName().toLowerCase())) {
+            return (T)RpcFactory.services.get(clazz.getClass().getName().toLowerCase());
+        }
+        Class clazz1 = null;
+        try {
+            clazz1 = Class.forName(clazz.getName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        Object obj = null;
+        try {
+            obj = clazz1.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        RpcFactory.addService((RpcModuleIf)obj);
+        return (T) obj;
+    }
 }
