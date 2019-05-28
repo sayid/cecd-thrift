@@ -40,7 +40,7 @@ class Rpc
         $this->extraData = $extraData;
     }
 
-    public function callRpc($classname, \ReflectionFunction $method, array $args = [])
+    public function callRpc($classname, \ReflectionMethod $method, array $args = [])
     {
         $host = $this->rpcModule->getHost();
         $port = $this->rpcModule->getPort();
