@@ -22,4 +22,6 @@ interface RpcModuleIf
     public function getServiceId(): int;
 
     public function getConfigKey() : string;
+
+    public function getLang() : string;
 }
