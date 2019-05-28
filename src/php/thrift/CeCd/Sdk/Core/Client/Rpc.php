@@ -8,6 +8,7 @@
 
 namespace Thrift\CeCd\Sdk\Core\Client;
 
+use mysql_xdevapi\Exception;
 use Thrift\CeCd\Sdk\Core\Services\RpcModuleIf;
 use Thrift\Protocol\TBinaryProtocol;
 use Thrift\Transport\TSocket;
@@ -39,11 +40,48 @@ class Rpc
         $this->extraData = $extraData;
     }
 
-    public function callRpc($classname, $method, $args = [])
+    public function callRpc($classname, \ReflectionFunction $method, array $args = [])
     {
         $host = $this->rpcModule->getHost();
         $port = $this->rpcModule->getPort();
         $this->extraData['self_id'] = $this->rpcModule->getServiceId();
+        $this->extraData['parameterTypes'] = [];
+        //调用方法有多少个参数 用于区分判断同名方法
+        $this->extraData['parameterNum'] = $method->getNumberOfParameters();
+        if ($this->rpcModule->getLang() == "java") {
+            //如果服务器是java
+            $parameters = $method->getParameters();
+            foreach ($parameters as $parameter) {
+                if ($parameter->hasType() == false) {
+                    //参数没有类型? java说这是耍流氓
+                    throw new \Exception($classname.":".$method." ".$parameter->getName()." must define type");
+                }
+                switch ($parameter->getType()->getName()) {
+                    case "string":
+                        $this->extraData['parameterTypes'][] = "String";
+                        break;
+                    case "int":
+                        $this->extraData['parameterTypes'][] = "Integer";
+                        break;
+                    case "float":
+                        $this->extraData['parameterTypes'][] = "Float";
+                        break;
+                    case "bool":
+                        $this->extraData['parameterTypes'][] = "Boolean";
+                        break;
+                    case "double":
+                        $this->extraData['parameterTypes'][] = "Double";
+                        break;
+                    case "array"://对应java的list
+                        $this->extraData['parameterTypes'][] = "Array";
+                        break;
+                    default:
+                        //只能定义简单的数据类型
+                        throw new \Exception($classname.":".$method." ".$parameter->getName()." type err");
+                        break;
+                }
+            }
+        }
         $extra = ceRpcEncode($this->extraData);
 
         $args = ceRpcEncode($args);
@@ -80,6 +118,7 @@ class Rpc
 
     public function __call($name, $arguments)
     {
+        $method = null;
         if (!app()->offsetExists($this->rpcClass)) {
             $reflectionClass = new \ReflectionClass($this->rpcClass);
 
@@ -95,17 +134,39 @@ class Rpc
             }
             $classpath = substr($comment, $pos_start, $pos_end - $pos_start);
             app()->offsetSet($this->rpcClass, $classpath);
+            foreach ($reflectionClass->getMethods() as $methodRow) {
+                app()->offsetSet($this->rpcClass.$methodRow->getName(), $methodRow);
+                if ($methodRow->getName() == $name) {
+                    $method = $methodRow;
+                }
+            }
         } else {
             $classpath = app()->offsetGet($this->rpcClass);
+            $method = app()->offsetGet($this->rpcClass.$name);
         }
         if (env('APP_DEBUG') == true && function_exists('getGouuseCore')) {
             getGouuseCore()->LogLib->rpc_count += 1;
         }
         $start = microtime_float();
-        $res = $this->callRpc($classpath, $name, $arguments);
+        $res = $this->callRpc($classpath, $method, $arguments);
         if (function_exists('getGouuseCore')) {
             getGouuseCore()->LogLib->optimization_list[] = microtime_float() - $start . "ms rpc:" . $classpath . "->" . $name . "()";
         }
         return $res;
+    }
+
+    /**
+     * 检查数组是array还是hash表
+     * @param array $array
+     */
+    private function isMapArray(array $array) {
+        $lastIndex = 0;
+        foreach ($array as $index => $value) {
+            if ($index !== $lastIndex) {
+                return false;
+            }
+            $lastIndex++;
+        }
+        return true;
     }
 }
