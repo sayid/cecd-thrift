@@ -140,6 +140,9 @@ class Rpc
                     $method = $methodRow;
                 }
             }
+            if (empty($method)) {
+                throw new \Exception($this->rpcClass." method ". $name . " not found");
+            }
         } else {
             $classpath = app()->offsetGet($this->rpcClass);
             $method = app()->offsetGet($this->rpcClass.$name);
