@@ -19,8 +19,6 @@ trait RpcModuleTrait
 
     private $rpcObj;
 
-    private $lang;
-
     public function __construct()
     {
     
