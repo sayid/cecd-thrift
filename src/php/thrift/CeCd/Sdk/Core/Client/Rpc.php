@@ -54,7 +54,7 @@ class Rpc
             foreach ($parameters as $parameter) {
                 if ($parameter->hasType() == false) {
                     //参数没有类型? java说这是耍流氓
-                    throw new \Exception($classname.":".$method." ".$parameter->getName()." must define type");
+                    throw new \Exception($classname.":".$method." parameter ".$parameter->getName()." must define type");
                 }
                 switch ($parameter->getType()->getName()) {
                     case "string":
