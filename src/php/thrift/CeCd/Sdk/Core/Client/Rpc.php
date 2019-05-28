@@ -48,6 +48,7 @@ class Rpc
         $this->extraData['parameterTypes'] = [];
         //调用方法有多少个参数 用于区分判断同名方法
         $this->extraData['parameterNum'] = $method->getNumberOfParameters();
+        $this->extraData['returnType'] = $method->getReturnType();
         if ($this->rpcModule->getLang() == "java") {
             //如果服务器是java
             $parameters = $method->getParameters();
@@ -83,7 +84,7 @@ class Rpc
             }
         }
         $extra = ceRpcEncode($this->extraData);
-
+        $methodName = $method->getName();
         $args = ceRpcEncode($args);
         $RpcPools = RpcPools::getInstance();
         $i = 1;//如果发生异常 重试一次
@@ -93,7 +94,7 @@ class Rpc
                 $transport = $RpcPools->get($host, $port);
                 $protocol = new TBinaryProtocol($transport);
                 $client = new RpcServiceClient($protocol);
-                $res = $client->callRpc($classname, $method, $args, $extra);
+                $res = $client->callRpc($classname, $methodName, $args, $extra);
                 //用完之后放回连接池中
                 //$RpcPools->push($host, $port, $transport);
                 $transport->close();
