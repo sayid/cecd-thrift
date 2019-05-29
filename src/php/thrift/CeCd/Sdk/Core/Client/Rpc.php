@@ -45,6 +45,7 @@ class Rpc
         $host = $this->rpcModule->getHost();
         $port = $this->rpcModule->getPort();
         $this->extraData['self_id'] = $this->rpcModule->getServiceId();
+        $this->extraData['fromLang'] = "php";
         $this->extraData['parameterTypes'] = [];
         //调用方法有多少个参数 用于区分判断同名方法
         $this->extraData['parameterNum'] = $method->getNumberOfParameters();
