@@ -76,8 +76,11 @@ class Rpc
                     case "double":
                         $this->extraData['parameterTypes'][] = "Double";
                         break;
-                    case "array"://对应java的list
+                    case "array"://顺序数组
                         $this->extraData['parameterTypes'][] = "Array";
+                        break;
+                    case "object"://高级对应java的jsonobject对象，map等字典统一用这种方式
+                        $this->extraData['parameterTypes'][] = "JSONObject";
                         break;
                     default:
                         //只能定义简单的数据类型
