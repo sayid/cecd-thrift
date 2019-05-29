@@ -186,8 +186,8 @@ abstract class SwooleServer extends TServer
     protected $processor = null;
     protected $serviceName = 'RpcService';
 
-    abstract public function onReceive($serv, $fd, $from_id, $data);
-    /*{
+    public function onReceive($serv, $fd, $from_id, $data)
+    {
         $transport = $this->transport_->accept();
         $transport->setServer($serv);
         $transport->setNetFD($fd);
@@ -204,11 +204,17 @@ abstract class SwooleServer extends TServer
             echo $log . PHP_EOL;
             getGouuseCore()->LogLib->error($e->getTraceAsString());
         }
-        getGouuseCore()->distroy();
-        OptionHelper::distroyGouuse();//注销容器
-    }*/
 
-    abstract public function handleLumenShutdown($processor_, $outputProtocol);
+        $this->onClose();
+    }
+
+    //可以在此方法中实现自己的回收逻辑
+    abstract public function onClose();
+
+    /**错误处理
+     * @return mixed
+     */
+    abstract public function handleLumenShutdown();
     /*{
         if ($error = error_get_last()) {
             getGouuseCore()->LogLib->error($error['message'], $error);
