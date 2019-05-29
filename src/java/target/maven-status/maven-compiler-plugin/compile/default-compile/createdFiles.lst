@@ -27,7 +27,6 @@ com/cecd/sdk/thrift/RpcService$callRpc_result$_Fields.class
 com/cecd/sdk/thrift/RpcService$AsyncProcessor.class
 com/cecd/sdk/thrift/ResponseData$ResponseDataStandardSchemeFactory.class
 com/cecd/sdk/rpc/RpcInterface.class
-com/cecd/sdk/rpc/RpcFactory$1.class
 com/cecd/sdk/thrift/InvalidException$1.class
 com/cecd/sdk/thrift/RpcService$1.class
 com/cecd/sdk/thrift/RpcService$AsyncProcessor$callRpc.class
@@ -46,4 +45,3 @@ com/cecd/sdk/thrift/InvalidException$InvalidExceptionTupleScheme.class
 com/cecd/sdk/thrift/RpcService$callRpc_result.class
 com/cecd/sdk/thrift/RpcService$callRpc_args.class
 com/cecd/sdk/thrift/InvalidException$InvalidExceptionTupleSchemeFactory.class
-com/cecd/sdk/rpc/authcenter/Libraries/AccountLib.class
