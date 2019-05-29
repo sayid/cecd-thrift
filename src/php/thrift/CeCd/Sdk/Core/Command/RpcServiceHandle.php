@@ -19,8 +19,12 @@ use Thrift\CeCd\Sdk\ResponseData;
  */
 abstract class RpcServiceHandle implements RpcServiceIf {
 
-    abstract public function callRpc($classname, $method, $arglist, $extra) : ResponseData;
-    /*{
+    abstract protected function before(& $classObject, string $method, array $arglist, array $extra);
+
+    abstract protected function after(array & $returnValue);
+
+    public function callRpc($classname, $method, $arglist, $extra) : ResponseData
+    {
         if ($classname == "ping" && $method == "ping") {
             $value = [
                 "code" => 0,
@@ -35,6 +39,16 @@ abstract class RpcServiceHandle implements RpcServiceIf {
         $fromUrl = $extra['from_url'] ?? "";
         $from_service_id = $extra['from_service_id'] ?? "";
         $form_request_id = $extra['form_request_id'] ?? "";
+
+        /*if ($client_service_id && $client_service_id != env("SERVICE_ID")) {
+            //客户端的service_id不匹配与服务器的service_id
+            $value = [
+                'code' => 1000,
+                "msg" => "",
+                'ex' => "this rpc client is not this server'client->".$client_service_id."-".env("SERVICE_ID"),
+            ];
+            return new ResponseData($value);
+        }*/
         if (!class_exists($classname)) {
             $value = [
                 'code' => 1000,
@@ -53,71 +67,48 @@ abstract class RpcServiceHandle implements RpcServiceIf {
             ];
             return new ResponseData($value);
         }
-
-        getGouuseCore()->member_info = $member_info =  $extra['member_info'] ?? [];
-        getGouuseCore()->company_info = $company_info =  $extra['company_info'] ?? [];
-        getGouuseCore()->AuthLib->setMember($member_info);
-        getGouuseCore()->AuthLib->setCompany($company_info);
-        $log_data = [
-            'args' => $arglist,
-            'extra' => $extra
-        ];
-        getGouuseCore()->LogLib->info($classname.'->'.$method, $log_data, false, 'rpc');
-
         try {
+            //调用前置拦截
+            $before = $this->before($obj, $method, $arglist, $extra);
+            if ($before instanceof ResponseData) {
+                return $before;
+            }
             $start = microtime_float();
             $data = call_user_func_array(array($obj, $method), $arglist);
             $runtime = microtime_float() - $start;
-            //执行注册的回调函数，可以做一些资源回收，如事务回滚
-            //注销容器 单例
-
-            //$this->doAfterCall();
             $value = [
                 "code" => 0,
                 "data" => ceRpcEncode($data),
                 "msg" => "success",
-                "debug" => ceRpcEncode(getGouuseCore()->LogLib->optimization_list),
                 "runtime" => $runtime
             ];
-            getGouuse()->distroy();
+            $this->after($value);
             $responseData = new ResponseData($value);
             return $responseData;
         } catch (\Exception $e) {
-            getGouuse()->distroy();
             $value = [
                 "code" => CodeLib::HTTP_ERROR,
                 "ex" => $e->getMessage(),
                 "strace" => $e->__toString()
             ];
+            $this->after($value);
             return new ResponseData($value);
         } catch (\Error $e) {
-            getGouuse()->distroy();
             $value = [
                 "code" => CodeLib::HTTP_ERROR,
                 "ex" => $e->getMessage(),
                 "strace" => $e->__toString()
             ];
+            $this->after($value);
             return new ResponseData($value);
         } catch (\FatalErrorException $e) {
-            getGouuse()->distroy();
             $value = [
                 "code" => CodeLib::HTTP_ERROR,
                 "ex" => $e->getMessage(),
                 "strace" => $e->__toString()
             ];
+            $this->after($value);
             return new ResponseData($value);
-        }
-    }
-
-    public function registryAfterCall(\Closure $clourse)
-    {
-        $this->afterCall = $clourse;
-    }
-
-    private function doAfterCall()
-    {
-        if ($this->afterCall) {
-            call_user_func($this->afterCall);
         }
     }
 
