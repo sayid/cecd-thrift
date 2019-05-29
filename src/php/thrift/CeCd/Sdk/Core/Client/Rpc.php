@@ -48,7 +48,9 @@ class Rpc
         $this->extraData['parameterTypes'] = [];
         //调用方法有多少个参数 用于区分判断同名方法
         $this->extraData['parameterNum'] = $method->getNumberOfParameters();
-        $this->extraData['returnType'] = $method->getReturnType();
+        if ($method->getReturnType()) {
+            $this->extraData['returnType'] = $method->getReturnType()->getName();
+        }
         if ($this->rpcModule->getLang() == "java") {
             //如果服务器是java
             $parameters = $method->getParameters();
