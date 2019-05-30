@@ -1,4 +1,4 @@
-import com.cecd.sdk.examples.usercenter.RpcServiceImplTest;
+import com.cecd.sdk.examples.RpcServiceImplTest;
 import com.cecd.sdk.rpc.RpcServer;
 
 public class Main {

@@ -1,4 +1,4 @@
-package com.cecd.sdk.examples.usercenter;
+package com.cecd.sdk.examples;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cecd.sdk.rpc.RpcServiceImpl;
