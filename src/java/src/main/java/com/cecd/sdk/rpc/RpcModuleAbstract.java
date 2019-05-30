@@ -13,6 +13,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class RpcModuleAbstract  {
 
@@ -20,7 +22,10 @@ public abstract class RpcModuleAbstract  {
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable, Exception {
 
-            RpcNetModel rpcModel = new RpcNetModel();
+            Map extraData = new HashMap();
+            if (null != RpcFactory.getRpcClient()) {
+                extraData = RpcFactory.getRpcClient().prepareExtra();
+            }
             Class<?>[] classes = proxy.getClass().getInterfaces();
             String className = classes[0].getName();
 
@@ -63,12 +68,12 @@ public abstract class RpcModuleAbstract  {
             RpcService.Client client = new RpcService.Client(protocol);
             transport.open();
 
-            result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), "");
+            result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), JSONObject.toJSONString(extraData));
             transport.close();
             System.out.println("Thrift client result=" + result);
 
             Type type = method.getReturnType();
-            System.out.println(method.getReturnType());
+
             return JSONObject.parseObject(result.getData(), type);
         }
     };

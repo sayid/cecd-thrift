@@ -18,6 +18,8 @@ import java.util.HashMap;
  */
 public class RpcFactory {
 
+    private static RpcClient rpcClient;
+
     private static Environment environment;
     /**
      * 注册rpc
@@ -55,6 +57,15 @@ public class RpcFactory {
 
     public static Environment getEnvironment() {
         return environment;
+    }
+
+
+    public static void setRpcClient(RpcClient newRpcClient) {
+        rpcClient = newRpcClient;
+    }
+
+    public static RpcClient getRpcClient() {
+       return rpcClient;
     }
 
     public static <T> T getInstance(Class<T> clazz) {
