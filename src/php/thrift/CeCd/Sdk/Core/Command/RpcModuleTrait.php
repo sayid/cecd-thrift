@@ -123,7 +123,7 @@ trait RpcModuleTrait
         if (isset($propertys[$property])) {
             return $propertys[$property];
         }
-        throw new \Exception($class. "'s property is ".$property." not found");
+        throw new \Exception($class. "'s property ".$property." is not found");
     }
 
 }
