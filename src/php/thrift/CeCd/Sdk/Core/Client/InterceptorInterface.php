@@ -20,6 +20,7 @@ interface InterceptorInterface
             $company_keys = ['company_id', 'company_name', 'company_short', 'company_no', 'logo', 'max_member', 'industry_id', 'admin_id'];
             $GOUUSE_MEMBER_INFO = ArrayHelper::filterArray($member_keys, $GOUUSE_MEMBER_INFO);
             $GOUUSE_COMPANY_INFO = ArrayHelper::filterArray($company_keys, $GOUUSE_COMPANY_INFO);
+            getGouuseCore()->LogLib->rpc_count += 1;
             return $extraData = [
                 'member_id' => $GOUUSE_MEMBER_INFO['member_id'] ?? 0,
                 'company_id' => $GOUUSE_MEMBER_INFO['company_id'] ?? 0,
