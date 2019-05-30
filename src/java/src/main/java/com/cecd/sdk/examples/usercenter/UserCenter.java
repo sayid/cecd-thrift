@@ -21,6 +21,7 @@ public class UserCenter extends RpcModuleAbstract implements RpcModuleIf {
 
     public UserCenter() {
         //初始化后放入工厂类中
+        System.out.println("ssss");
         RpcFactory.addService(this);
         RpcFactory.setRpcClient(new RpcClientTest());
     }

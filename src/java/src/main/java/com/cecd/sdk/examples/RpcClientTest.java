@@ -11,6 +11,7 @@ public class RpcClientTest extends RpcClient {
         Map map = new HashMap();
         map.put("a", "test1");
         map.put("b", "test2");
+        System.out.println("alibaba");
         return map;
     }
 }
