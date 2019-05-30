@@ -59,28 +59,11 @@ if (! function_exists('checkOpenMethod')) {
     }
 }
 
-/**
- * 读取rpc目录下的所有类
- */
-/**
- * 读取rpc目录下的所有类
- */
-if (! function_exists('getRpcClasses')) {
-    function getRpcClasses($path, $prefix = "App\\Rpc")
+
+if (! function_exists('microtime_float')) {
+    function microtime_float()
     {
-        $allClasses = [];
-        $handler = opendir($path); //打开当前文件夹由$path指定。
-        while (($filename = readdir($handler)) !== false) {
-            if ($filename != "." && $filename != "..") {//文件夹文件名字为'.'和‘..’，不要对他们进行操作
-                if (is_dir($path . "/" . $filename)) {// 如果读取的某个对象是文件夹，则递归
-                    getRpcClasses($path . "/" . $filename, $prefix."\\".$filename);
-                } else {
-                    $filename = str_replace(".php", "", $filename);
-                    $allClasses[] = $prefix . "\\" . $filename;
-                }
-            }
-        }
-        @closedir($handler);
-        return $allClasses;
+        list($usec, $sec) = explode(" ", microtime());
+        return ((float)$usec + (float)$sec);
     }
 }

@@ -23,8 +23,6 @@ class Rpc
 
     private $rpcModule;
 
-    private $extraData;
-
     private static $pools = [];
 
 
@@ -35,22 +33,26 @@ class Rpc
         $this->rpcModule = $rpcModule;
     }
 
-    public function setExtraData(array $extraData = [])
-    {
-        $this->extraData = $extraData;
-    }
-
     public function callRpc($classname, \ReflectionMethod $method, array $args = [])
     {
         $host = $this->rpcModule->getHost();
         $port = $this->rpcModule->getPort();
-        $this->extraData['self_id'] = $this->rpcModule->getServiceId();
-        $this->extraData['fromLang'] = "php";
-        $this->extraData['parameterTypes'] = [];
+        $extraData = [];
+        if ($this->rpcModule->clientInterceptor) {
+            $clientInterceptorClass = $this->rpcModule->clientInterceptor;
+            $clientInterceptor = new $clientInterceptorClass;
+            if (method_exists($clientInterceptor, 'before')) {
+                //执行前置拦截器
+                $clientInterceptor->before($extraData);
+            }
+        }
+        $extraData['self_id'] = $this->rpcModule->getServiceId();
+        $extraData['fromLang'] = "php";
+        $extraData['parameterTypes'] = [];
         //调用方法有多少个参数 用于区分判断同名方法
-        $this->extraData['parameterNum'] = $method->getNumberOfParameters();
+        $extraData['parameterNum'] = $method->getNumberOfParameters();
         if ($method->getReturnType()) {
-            $this->extraData['returnType'] = $method->getReturnType()->getName();
+            $extraData['returnType'] = $method->getReturnType()->getName();
         }
         if ($this->rpcModule->getLang() == "java") {
             //如果服务器是java
@@ -62,25 +64,25 @@ class Rpc
                 }
                 switch ($parameter->getType()->getName()) {
                     case "string":
-                        $this->extraData['parameterTypes'][] = "String";
+                        $extraData['parameterTypes'][] = "String";
                         break;
                     case "int":
-                        $this->extraData['parameterTypes'][] = "Integer";
+                        $extraData['parameterTypes'][] = "Integer";
                         break;
                     case "float":
-                        $this->extraData['parameterTypes'][] = "Float";
+                        $extraData['parameterTypes'][] = "Float";
                         break;
                     case "bool":
-                        $this->extraData['parameterTypes'][] = "Boolean";
+                        $extraData['parameterTypes'][] = "Boolean";
                         break;
                     case "double":
-                        $this->extraData['parameterTypes'][] = "Double";
+                        $extraData['parameterTypes'][] = "Double";
                         break;
                     case "array"://顺序数组
                         $this->extraData['parameterTypes'][] = "Array";
                         break;
                     case "object"://高级对应java的jsonobject对象，map等字典统一用这种方式
-                        $this->extraData['parameterTypes'][] = "JSONObject";
+                        $extraData['parameterTypes'][] = "JSONObject";
                         break;
                     default:
                         //只能定义简单的数据类型
@@ -89,7 +91,7 @@ class Rpc
                 }
             }
         }
-        $extra = ceRpcEncode($this->extraData);
+        $extra = ceRpcEncode($extraData);
         $methodName = $method->getName();
         $args = ceRpcEncode($args);
         $RpcPools = RpcPools::getInstance();
@@ -100,14 +102,21 @@ class Rpc
                 $transport = $RpcPools->get($host, $port);
                 $protocol = new TBinaryProtocol($transport);
                 $client = new RpcServiceClient($protocol);
+                $start = microtime_float();
                 $res = $client->callRpc($classname, $methodName, $args, $extra);
+                $used_time = microtime_float() - $start;
                 //用完之后放回连接池中
                 //$RpcPools->push($host, $port, $transport);
                 $transport->close();
                 if (isset($res->data)) {
                     $res->data = ceRpcDecode($res->data);
+                    if (isset($clientInterceptor)
+                        && method_exists($clientInterceptor, 'after')) {
+                        $clientInterceptor->after($res, $used_time);
+                    }
                     return $res->data;
                 } elseif ($res->code) {
+                    $this->rpcModule->clientInterceptor->after($res, $used_time);
                     throw new RpcArrayException(['code' => $res->code, 'msg' => $res->msg , 'exception' => $res->ex, "strace" => $res->strace]);
                 }
             } catch (TException $tx) {
@@ -154,14 +163,8 @@ class Rpc
             $classpath = app()->offsetGet($this->rpcClass);
             $method = app()->offsetGet($this->rpcClass.$name);
         }
-        if (env('APP_DEBUG') == true && function_exists('getGouuseCore')) {
-            getGouuseCore()->LogLib->rpc_count += 1;
-        }
-        $start = microtime_float();
+
         $res = $this->callRpc($classpath, $method, $arguments);
-        if (function_exists('getGouuseCore')) {
-            getGouuseCore()->LogLib->optimization_list[] = microtime_float() - $start . "ms rpc:" . $classpath . "->" . $name . "()";
-        }
         return $res;
     }
 
