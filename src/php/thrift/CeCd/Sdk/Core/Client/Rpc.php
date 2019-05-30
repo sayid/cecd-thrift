@@ -23,10 +23,6 @@ class Rpc
 
     private $rpcModule;
 
-    private static $pools = [];
-
-
-
     public function __construct($classname,RpcModuleIf $rpcModule)
     {
         $this->rpcClass = $classname;
@@ -112,12 +108,15 @@ class Rpc
                     $res->data = ceRpcDecode($res->data);
                     if (isset($clientInterceptor)
                         && method_exists($clientInterceptor, 'after')) {
-                        $clientInterceptor->after($res, $used_time);
+                        $clientInterceptor->after($res, $classname, $methodName, $used_time);
                     }
                     return $res->data;
                 } elseif ($res->code) {
                     $used_time = sprintf("%.2f", $used_time);
-                    $this->rpcModule->clientInterceptor->after($res, $classname, $methodName, $used_time);
+                    if (isset($clientInterceptor)
+                        && method_exists($clientInterceptor, 'after')) {
+                        $clientInterceptor->after($res, $classname, $methodName, $used_time);
+                    }
                     throw new RpcArrayException(['code' => $res->code, 'msg' => $res->msg , 'exception' => $res->ex, "strace" => $res->strace]);
                 }
             } catch (TException $tx) {
