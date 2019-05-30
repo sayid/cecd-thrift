@@ -103,6 +103,11 @@ trait RpcModuleTrait
         return $this->config_key;
     }
 
+    public function getClientInterceptor() : string
+    {
+        return $this->clientInterceptor;
+    }
+
     public function getClass($property)
     {
         $class = get_class($this);

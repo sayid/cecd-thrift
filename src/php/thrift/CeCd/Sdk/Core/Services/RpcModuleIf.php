@@ -24,4 +24,6 @@ interface RpcModuleIf
     public function getConfigKey() : string;
 
     public function getLang() : string;
+
+    public function getClientInterceptor() : string;
 }

@@ -31,8 +31,9 @@ class Rpc
         $host = $this->rpcModule->getHost();
         $port = $this->rpcModule->getPort();
         $extraData = [];
-        if ($this->rpcModule->clientInterceptor) {
-            $clientInterceptorClass = $this->rpcModule->clientInterceptor;
+        if ($this->rpcModule->getClientInterceptor()) {
+            //如果注册了拦截器
+            $clientInterceptorClass = $this->rpcModule->getClientInterceptor();
             $clientInterceptor = new $clientInterceptorClass;
             if (method_exists($clientInterceptor, 'before')) {
                 //执行前置拦截器
