@@ -38,7 +38,7 @@ interface InterceptorInterface
      * @param double $used_time 请求时长
      * @return mixed
      */
-      public function after(ResponseData $responseData, string $classpath, string $method, double $used_time);
+      public function after(ResponseData $responseData, string $classpath, string $method, float $used_time);
         /*
         getGouuseCore()->LogLib->optimization_list[] = microtime_float() - $start . "ms rpc:" . $classpath . "->" . $name . "()";*/
 

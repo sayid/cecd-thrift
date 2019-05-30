@@ -116,7 +116,8 @@ class Rpc
                     }
                     return $res->data;
                 } elseif ($res->code) {
-                    $this->rpcModule->clientInterceptor->after($res, $used_time);
+                    $used_time = sprintf("%.2f", $used_time);
+                    $this->rpcModule->clientInterceptor->after($res, $classname, $methodName, $used_time);
                     throw new RpcArrayException(['code' => $res->code, 'msg' => $res->msg , 'exception' => $res->ex, "strace" => $res->strace]);
                 }
             } catch (TException $tx) {
