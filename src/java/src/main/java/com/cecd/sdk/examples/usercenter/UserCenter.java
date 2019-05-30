@@ -1,5 +1,6 @@
 package com.cecd.sdk.examples.usercenter;
 
+import com.cecd.sdk.examples.RpcClientTest;
 import com.cecd.sdk.rpc.RpcFactory;
 import com.cecd.sdk.rpc.RpcModuleAbstract;
 import com.cecd.sdk.rpc.RpcModuleIf;
@@ -21,6 +22,7 @@ public class UserCenter extends RpcModuleAbstract implements RpcModuleIf {
     public UserCenter() {
         //初始化后放入工厂类中
         RpcFactory.addService(this);
+        RpcFactory.setRpcClient(new RpcClientTest());
     }
 
     public int getServiceId() {

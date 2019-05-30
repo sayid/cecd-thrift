@@ -7,5 +7,5 @@ import java.util.Map;
  */
 abstract public class RpcClient {
 
-    abstract protected Map prepareExtra();
+    abstract public Map prepareExtra();
 }
