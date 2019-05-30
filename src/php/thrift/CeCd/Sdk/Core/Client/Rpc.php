@@ -8,11 +8,8 @@
 
 namespace Thrift\CeCd\Sdk\Core\Client;
 
-use mysql_xdevapi\Exception;
 use Thrift\CeCd\Sdk\Core\Services\RpcModuleIf;
 use Thrift\Protocol\TBinaryProtocol;
-use Thrift\Transport\TSocket;
-use Thrift\Transport\TFramedTransport;
 use Thrift\Exception\TException;
 use Thrift\CeCd\Sdk\RpcServiceClient;
 use Thrift\CeCd\Sdk\Core\RpcArrayException;
@@ -166,20 +163,5 @@ class Rpc
 
         $res = $this->callRpc($classpath, $method, $arguments);
         return $res;
-    }
-
-    /**
-     * 检查数组是array还是hash表
-     * @param array $array
-     */
-    private function isMapArray(array $array) {
-        $lastIndex = 0;
-        foreach ($array as $index => $value) {
-            if ($index !== $lastIndex) {
-                return false;
-            }
-            $lastIndex++;
-        }
-        return true;
     }
 }
