@@ -1,7 +1,9 @@
+import com.cecd.sdk.examples.usercenter.RpcServiceImplTest;
+import com.cecd.sdk.rpc.RpcServer;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("hello ce sdk jar");
-        //System.out.println(MsgCode.display(1));
-        //AccountLib accountLib = RpcFactory.getRpc(AccountLib.class);
+        RpcServer rpc = new RpcServer(8090, new RpcServiceImplTest());
+        rpc.start();
     }
 }

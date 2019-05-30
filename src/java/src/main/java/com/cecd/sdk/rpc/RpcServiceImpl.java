@@ -10,7 +10,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-abstract class RpcServiceImpl implements RpcService.Iface {
+abstract public class RpcServiceImpl implements RpcService.Iface {
 
     abstract protected Object before(String classname, String method, Object[] argsObj, JSONObject extraObj);
 
