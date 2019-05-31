@@ -19,17 +19,16 @@ use Thrift\CeCd\Sdk\ResponseData;
  */
 class RpcServiceHandle implements RpcServiceIf {
 
-    private $serverInterceptorClass;
-
-    private $serverInterceptorObj;
+    private $serverInterceptor;
 
     public function setServerInterceptorClass($serverInterceptorClass)
     {
-        $this->serverInterceptorClass = $serverInterceptorClass;
+        $this->serverInterceptor = $serverInterceptorClass;
     }
 
     public function callRpc($classname, $method, $arglist, $extra) : ResponseData
     {
+
         if ($classname == "ping" && $method == "ping") {
             $value = [
                 "code" => 0,
@@ -74,10 +73,13 @@ class RpcServiceHandle implements RpcServiceIf {
         }
         try {
             //调用前置拦截
-            $before = $this->before($obj, $method, $arglist, $extra);
-            if ($before instanceof ResponseData) {
-                return $before;
+            if ($this->serverInterceptor && method_exists($this->serverInterceptor, "before")) {
+                $before = $this->serverInterceptor->before($obj, $method, $arglist, $extra);
+                if ($before instanceof ResponseData) {
+                    return $before;
+                }
             }
+
             $start = microtime_float();
             $data = call_user_func_array(array($obj, $method), $arglist);
             $runtime = microtime_float() - $start;
@@ -87,7 +89,10 @@ class RpcServiceHandle implements RpcServiceIf {
                 "msg" => "success",
                 "runtime" => $runtime
             ];
-            $this->after($value);
+            if ($this->serverInterceptor && method_exists($this->serverInterceptor, "after")) {
+                $this->serverInterceptor->after($value);
+            }
+
             $responseData = new ResponseData($value);
             return $responseData;
         } catch (\Exception $e) {
@@ -96,7 +101,9 @@ class RpcServiceHandle implements RpcServiceIf {
                 "ex" => $e->getMessage(),
                 "strace" => $e->__toString()
             ];
-            $this->after($value);
+            if ($this->serverInterceptor && method_exists($this->serverInterceptor, "after")) {
+                $this->serverInterceptor->after($value);
+            }
             return new ResponseData($value);
         } catch (\Error $e) {
             $value = [
@@ -104,7 +111,9 @@ class RpcServiceHandle implements RpcServiceIf {
                 "ex" => $e->getMessage(),
                 "strace" => $e->__toString()
             ];
-            $this->after($value);
+            if ($this->serverInterceptor && method_exists($this->serverInterceptor, "after")) {
+                $this->serverInterceptor->after($value);
+            }
             return new ResponseData($value);
         } catch (\FatalErrorException $e) {
             $value = [
@@ -112,7 +121,9 @@ class RpcServiceHandle implements RpcServiceIf {
                 "ex" => $e->getMessage(),
                 "strace" => $e->__toString()
             ];
-            $this->after($value);
+            if ($this->serverInterceptor && method_exists($this->serverInterceptor, "after")) {
+                $this->serverInterceptor->after($value);
+            }
             return new ResponseData($value);
         }
     }
