@@ -17,11 +17,16 @@ use Thrift\CeCd\Sdk\ResponseData;
  * Class RpcServiceHandle
  * @package GouuseCore\Swoole\Rpc
  */
-abstract class RpcServiceHandle implements RpcServiceIf {
+class RpcServiceHandle implements RpcServiceIf {
 
-    abstract protected function before(& $classObject, string $method, array $arglist, array $extra);
+    private $serverInterceptorClass;
 
-    abstract protected function after(array & $returnValue);
+    private $serverInterceptorObj;
+
+    public function setServerInterceptorClass($serverInterceptorClass)
+    {
+        $this->serverInterceptorClass = $serverInterceptorClass;
+    }
 
     public function callRpc($classname, $method, $arglist, $extra) : ResponseData
     {
