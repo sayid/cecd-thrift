@@ -210,7 +210,7 @@ class SwooleServer extends TServer
 
         if ($this->serverInterceptor
             && method_exists($this->serverInterceptor, 'onClose')) {
-            call_user_func_array(onClose,[$this->serverInterceptor,[]]);
+            call_user_func_array([$this->serverInterceptor, 'onClose'], []);
         }
         //$this->onClose();
     }
