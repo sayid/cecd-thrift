@@ -114,6 +114,13 @@ class SwooleServer extends TServer
         $this->port = $port;
     }*/
 
+    //拦截器
+    private $serverInterceptor;
+
+    public function setServerInterceptorClass($serverInterceptorClass)
+    {
+        $this->serverInterceptor = $serverInterceptorClass;
+    }
 
     /**
      * Resolve application.
