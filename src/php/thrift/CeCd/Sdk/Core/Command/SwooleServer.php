@@ -6,7 +6,7 @@ use GouuseCore\Helpers\OptionHelper;
 /**
  * Class Server.
  */
-abstract class SwooleServer extends TServer
+class SwooleServer extends TServer
 {
     /**
      * lumen-swoole version.
@@ -21,15 +21,8 @@ abstract class SwooleServer extends TServer
      *
      * @var string
      */
-    protected $host = '0.0.0.0';
-    /**
-     * Default port.
-     *
-     * @var int
-     */
-    protected $port = 8091;
-    /**
-     * Pid file.
+
+     /* Pid file.
      *
      * @var string
      */
@@ -196,7 +189,7 @@ abstract class SwooleServer extends TServer
         $outputTransport = $this->outputTransportFactory_->getTransport($transport);
         $inputProtocol = $this->inputProtocolFactory_->getProtocol($inputTransport);
         $outputProtocol = $this->outputProtocolFactory_->getProtocol($outputTransport);
-        register_shutdown_function([$this, 'handleLumenShutdown'], $this->processor_, $outputProtocol);
+        //register_shutdown_function([$this, 'handleLumenShutdown'], $this->processor_, $outputProtocol);
         try {
             $this->processor_->process($inputProtocol, $outputProtocol);
         } catch (\Exception $e) {
@@ -205,23 +198,9 @@ abstract class SwooleServer extends TServer
             getGouuseCore()->LogLib->error($e->getTraceAsString());
         }
 
-        $this->onClose();
+        //$this->onClose();
     }
 
-    //可以在此方法中实现自己的回收逻辑
-    abstract public function onClose();
-
-    /**错误处理
-     * @return mixed
-     */
-    abstract public function handleLumenShutdown();
-    /*{
-        if ($error = error_get_last()) {
-            getGouuseCore()->LogLib->error($error['message'], $error);
-        } else {
-            getGouuseCore()->LogLib->error("rpc swoole error");
-        }
-    }*/
 
     function onWorkerStart()
     {
@@ -237,12 +216,6 @@ abstract class SwooleServer extends TServer
         echo $log."\n";
     }
 
-    public function setServer($host, $port)
-    {
-        $this->host = $host;
-        $this->port = $port;
-    }
-
     function onConnect($server, $fd, $reactorId)
     {
         echo "new";
@@ -255,7 +228,7 @@ abstract class SwooleServer extends TServer
             throw new \Exception('The server is already running.');
         }
 
-        $this->server = new \Swoole\Server($this->host, $this->port);
+        $this->server = new \Swoole\Server($this->transport_->getHost(), $this->transport_->getPort());
         if (!empty($this->options)) {
             $this->server->set($this->options);
         }
