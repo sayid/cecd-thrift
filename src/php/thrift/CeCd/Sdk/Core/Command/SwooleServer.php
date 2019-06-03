@@ -196,7 +196,10 @@ class SwooleServer extends TServer
         $outputTransport = $this->outputTransportFactory_->getTransport($transport);
         $inputProtocol = $this->inputProtocolFactory_->getProtocol($inputTransport);
         $outputProtocol = $this->outputProtocolFactory_->getProtocol($outputTransport);
-        //register_shutdown_function([$this, 'handleLumenShutdown'], $this->processor_, $outputProtocol);
+        if ($this->serverInterceptor
+            && method_exists($this->serverInterceptor, 'handleLumenShutdown')) {
+            register_shutdown_function([$this->serverInterceptor, 'handleLumenShutdown']);
+        }
         try {
             $this->processor_->process($inputProtocol, $outputProtocol);
         } catch (\Exception $e) {
@@ -205,6 +208,10 @@ class SwooleServer extends TServer
             getGouuseCore()->LogLib->error($e->getTraceAsString());
         }
 
+        if ($this->serverInterceptor
+            && method_exists($this->serverInterceptor, 'onClose')) {
+            call_user_func_array(onClose,[$this->serverInterceptor,[]]);
+        }
         //$this->onClose();
     }
 
