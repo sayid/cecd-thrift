@@ -65,8 +65,6 @@ abstract class Command
         'package_length_type'   => 'N', //长度的类型，参见PHP的pack函数
         'package_length_offset' => 0,   //第N个字节是包长度的值
         'package_body_offset'   => 4,   //从第几个字节计算长度
-        'user' => 'www-data',
-        'group' => 'www-data',
     ];
     /**
      * Create a new Command instance.
