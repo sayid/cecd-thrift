@@ -111,22 +111,12 @@ trait RpcModuleTrait
     public function getClass($property)
     {
         $class = get_class($this);
-        static $propertys = [];
-        if (!isset($propertys[$property])) {
-            $reflectionClass = new \ReflectionClass($class);
-            $doc = $reflectionClass->getDocComment();
-            $array = explode("*", $doc);
-            foreach ($array as $value) {
-                $value = str_replace(["\n", "\r"], "", $value);
-                if (($pos = strpos($value, "@property")) !== false) {
-                    $string = trim(substr($value, $pos +9,  strpos($value, "$") - $pos - 9));
-                    $row = trim(substr($value, strpos($value, "$") + 1));
-                    $propertys[$row] = $string;
+        if (isset($this->rpcs)) {
+            foreach ($this->rpcs as $rpc) {
+                if (strpos($rpc, $property)) {
+                    return $rpc;
                 }
             }
-        }
-        if (isset($propertys[$property])) {
-            return $propertys[$property];
         }
         throw new \Exception($class. "'s property ".$property." is not found");
     }
