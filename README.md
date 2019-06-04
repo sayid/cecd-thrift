@@ -2,9 +2,9 @@
 
 thrift:0.12
 
-php运行环境：php7.1+(仅支持lumen5.5+)，Swoole4.2+    [src/php/README.md]文档说明
+php运行环境：php7.1+(仅支持lumen5.5+)，Swoole4.2+    [文档说明](src/php/README.md)
 
-java运行环境： jdk1.8     [src/java/README.md]文档说明
+java运行环境： jdk1.8     [文档说明](src/java/README.md)
     
     
 作者qq:449063862
