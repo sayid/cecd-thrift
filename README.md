@@ -67,7 +67,7 @@
      */
     class AuthCenter implements RpcModuleIf
     {
-        use RpcModuleTrait;
+        use RpcModuleTrait;//一定
     
         private $serviceId = 1006;
     
