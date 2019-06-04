@@ -232,7 +232,7 @@ class SwooleServer extends TServer
 
     function onConnect($server, $fd, $reactorId)
     {
-        echo "new";
+
     }
 
     function serve()
