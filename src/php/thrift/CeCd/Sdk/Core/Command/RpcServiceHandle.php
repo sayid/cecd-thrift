@@ -57,7 +57,7 @@ class RpcServiceHandle implements RpcServiceIf {
             $value = [
                 'code' => 1000,
                 "msg" => "",
-                'ex' => env("SERVICE_ID") . ":" . $classname."->".$method." not exists",
+                'ex' => env("SERVICE_ID") . ":" . $classname." not exists",
             ];
             return new ResponseData($value);
         }
