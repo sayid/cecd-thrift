@@ -20,7 +20,7 @@ public interface RpcModuleIf {
 
     public RpcModuleIf setTimeout(int timeout);
 
-    public void setInterceptor(Class interceptor);
+    public void setInterceptor(ClientInterceptor interceptor);
 
-    public Class getInterceptor();
+    public ClientInterceptor getInterceptor();
 }

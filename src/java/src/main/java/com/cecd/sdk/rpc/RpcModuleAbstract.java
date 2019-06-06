@@ -29,7 +29,7 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
     private String lang = "php";
 
     //客户端拦截器
-    private Class interceptor;
+    private ClientInterceptor interceptor;
 
     public int getServiceId() {
         return serviceId;
@@ -78,12 +78,12 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
         this.lang = lang;
     }
 
-    public void setInterceptor(Class interceptor) {
-        this.interceptor = interceptor;
+    public ClientInterceptor getInterceptor() {
+        return interceptor;
     }
 
-    public Class getInterceptor() {
-        return interceptor;
+    public void setInterceptor(ClientInterceptor interceptor) {
+        this.interceptor = interceptor;
     }
 
     public RpcModuleIf setTimeout(int timeout) {
@@ -121,22 +121,7 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
             //处理传输一些额外数据
             Map extraData = new HashMap();
             if (null != rpcLoader.getInterceptor()) {
-                Object interObj;
-                Method methodBefore;
-                Class[] params = {};
-                try {
-                    interObj = rpcLoader.getInterceptor().newInstance();
-                    methodBefore = rpcLoader.getInterceptor().getMethod("before", params);
-                    extraData = (Map)methodBefore.invoke(interObj, params);
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                }
+                extraData = rpcLoader.getInterceptor().before();
             }
 
             RpcDoc rpcDoc = classes[0].getAnnotation(RpcDoc.class);

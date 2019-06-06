@@ -12,9 +12,9 @@ import java.lang.reflect.Method;
 
 public class RpcServiceImpl implements RpcService.Iface {
 
-    private Class interceptor;
+    private ServerInterceptor interceptor;
 
-    public void setInterceptorIf(Class interceptorIf) {
+    public void setInterceptorIf(ServerInterceptor interceptorIf) {
         this.interceptor = interceptorIf;
     }
 
@@ -27,31 +27,10 @@ public class RpcServiceImpl implements RpcService.Iface {
             /**
              * 前置拦截，做一些逻辑处理
              */
-            Class[] params = {String.class, String.class, Array.class, JSONObject.class};
-            try {
-                Method before = interceptor.getMethod("before", params);
-                Object object = null;
-                try {
-                    object = interceptor.newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                Object[] interceptorArgs = {classname, method, argsObj, extraObj};
-                Object beforeData = null;
-                try {
-                    beforeData = before.invoke(object, interceptorArgs);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                if (beforeData instanceof ResponseData) {
-                    return (ResponseData)beforeData;
-                }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+            Object beforeData;
+            beforeData = interceptor.before(classname, method, argsObj, extraObj);
+            if (beforeData instanceof ResponseData) {
+                return (ResponseData)beforeData;
             }
         }
 
@@ -152,32 +131,7 @@ public class RpcServiceImpl implements RpcService.Iface {
             /**
              * 后置拦截，做一些逻辑处理
              */
-            Class[] params = {ResponseData.class};
-            try {
-                Method after = interceptor.getMethod("after", params);
-                Object object = null;
-                try {
-                    object = interceptor.newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                Object[] interceptorArgs = {responseData};
-                Object beforeData = null;
-                try {
-                    beforeData = after.invoke(object, interceptorArgs);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-                if (beforeData instanceof ResponseData) {
-                    return (ResponseData)beforeData;
-                }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
+            responseData = interceptor.after(responseData);
         }
 
         return responseData;

@@ -17,6 +17,7 @@ public class RpcTest {
     public void testUser() {
         UserCenter userCenter = RpcFactory.getInstance(UserCenter.class);
         userCenter.setHost("192.168.5.190").setPort(1005);
+        System.out.println(userCenter.getLang());
         MemberLib memberLib = userCenter.getRpc(MemberLib.class);
         MemberModel member = memberLib.getSimpleMemberById(1);
     }

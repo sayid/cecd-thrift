@@ -1,12 +1,11 @@
 package com.cecd.sdk.examples;
 
-
-import com.cecd.sdk.rpc.InterceptorIf;
+import com.cecd.sdk.rpc.ClientInterceptor;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RpcClientIntercepterTest implements InterceptorIf {
+public class RpcClientIntercepterTest extends ClientInterceptor {
 
     public Map before() {
         Map map = new HashMap();
