@@ -19,4 +19,8 @@ public interface RpcModuleIf {
     public int getTimeout();
 
     public RpcModuleIf setTimeout(int timeout);
+
+    public void setInterceptor(Class interceptor);
+
+    public Class getInterceptor();
 }

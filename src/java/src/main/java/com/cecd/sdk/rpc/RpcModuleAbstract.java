@@ -1,6 +1,7 @@
 package com.cecd.sdk.rpc;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cecd.sdk.examples.usercenter.UserCenter;
 import com.cecd.sdk.thrift.ResponseData;
 import com.cecd.sdk.thrift.RpcService;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -9,23 +10,92 @@ import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.lang.reflect.Type;
+import java.lang.reflect.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class RpcModuleAbstract  {
+public abstract class RpcModuleAbstract implements RpcModuleIf  {
+
+    private int serviceId;
+
+    private String serviceName;
+
+    protected String host;
+
+    protected int port;
+
+    private int timeout = 1000;
+
+    private String lang = "php";
+
+    //客户端拦截器
+    private Class interceptor;
+
+    public int getServiceId() {
+        return serviceId;
+    }
+
+    public RpcModuleIf setServiceId(int serviceId) {
+        this.serviceId = serviceId;
+        return this;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public RpcModuleIf setHost(String host) {
+        this.host = host;
+        return this;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public RpcModuleIf setPort(int port) {
+        this.port = port;
+        return this;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    public void setInterceptor(Class interceptor) {
+        this.interceptor = interceptor;
+    }
+
+    public Class getInterceptor() {
+        return interceptor;
+    }
+
+    public RpcModuleIf setTimeout(int timeout) {
+        this.timeout = timeout;
+        return this;
+    }
+
 
     private static InvocationHandler handler = new InvocationHandler() {
 
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable, Exception {
 
-            Map extraData = new HashMap();
-            if (null != RpcFactory.getRpcClient()) {
-                extraData = RpcFactory.getRpcClient().prepareExtra();
-            }
             Class<?>[] classes = proxy.getClass().getInterfaces();
             String className = classes[0].getName();
 
@@ -47,6 +117,28 @@ public abstract class RpcModuleAbstract  {
                 rpcLoader.setHost(newHost);
                 rpcLoader.setPort(Integer.valueOf(newPort));
             }
+
+            //处理传输一些额外数据
+            Map extraData = new HashMap();
+            if (null != rpcLoader.getInterceptor()) {
+                Object interObj;
+                Method methodBefore;
+                Class[] params = {};
+                try {
+                    interObj = rpcLoader.getInterceptor().newInstance();
+                    methodBefore = rpcLoader.getInterceptor().getMethod("before", params);
+                    extraData = (Map)methodBefore.invoke(interObj, params);
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+            }
+
             RpcDoc rpcDoc = classes[0].getAnnotation(RpcDoc.class);
             if (rpcDoc == null) {
                 throw new NullPointerException("未定义rpc"+className);
