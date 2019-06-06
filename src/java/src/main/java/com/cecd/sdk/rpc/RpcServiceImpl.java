@@ -10,21 +10,49 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-abstract public class RpcServiceImpl implements RpcService.Iface {
+public class RpcServiceImpl implements RpcService.Iface {
 
-    abstract protected Object before(String classname, String method, Object[] argsObj, JSONObject extraObj);
+    private Class interceptor;
+
+    public void setInterceptorIf(Class interceptorIf) {
+        this.interceptor = interceptorIf;
+    }
 
     public ResponseData callRpc(String classname, String method, String arglist, String extra) throws InvalidException, org.apache.thrift.TException {
 
         Object[] argsObj =  JSONObject.parseArray(arglist).toArray();
         JSONObject extraObj = JSONObject.parseObject(extra);
 
-        /**
-         * 前置拦截，做一些逻辑处理
-         */
-        Object beforeData = before(classname, method, argsObj, extraObj);
-        if (beforeData instanceof ResponseData) {
-            return (ResponseData)beforeData;
+        if (null != interceptor) {
+            /**
+             * 前置拦截，做一些逻辑处理
+             */
+            Class[] params = {String.class, String.class, Array.class, JSONObject.class};
+            try {
+                Method before = interceptor.getMethod("before", params);
+                Object object = null;
+                try {
+                    object = interceptor.newInstance();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                Object[] interceptorArgs = {classname, method, argsObj, extraObj};
+                Object beforeData = null;
+                try {
+                    beforeData = before.invoke(object, interceptorArgs);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+                if (beforeData instanceof ResponseData) {
+                    return (ResponseData)beforeData;
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
         }
 
         ResponseData responseData = new ResponseData();
@@ -89,7 +117,6 @@ abstract public class RpcServiceImpl implements RpcService.Iface {
                 responseData.setEx(e.getMessage());
                 responseData.setStrace(e.getStackTrace().toString());
             }
-            System.out.println(method);
             if (responseData.getCode() == 0) {
                 Method m = null;
                 try {
@@ -120,6 +147,39 @@ abstract public class RpcServiceImpl implements RpcService.Iface {
                 }
             }
         }
+
+        if (null != interceptor) {
+            /**
+             * 后置拦截，做一些逻辑处理
+             */
+            Class[] params = {ResponseData.class};
+            try {
+                Method after = interceptor.getMethod("after", params);
+                Object object = null;
+                try {
+                    object = interceptor.newInstance();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                Object[] interceptorArgs = {responseData};
+                Object beforeData = null;
+                try {
+                    beforeData = after.invoke(object, interceptorArgs);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+                if (beforeData instanceof ResponseData) {
+                    return (ResponseData)beforeData;
+                }
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+
         return responseData;
     }
 
