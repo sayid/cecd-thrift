@@ -1,10 +1,14 @@
 
+import com.cecd.sdk.examples.RpcServerIntercepterTest;
 import com.cecd.sdk.rpc.RpcServer;
 import com.cecd.sdk.rpc.RpcServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
-        RpcServer rpc = new RpcServer(8090, new RpcServiceImpl());
+        RpcServiceImpl rpcService = new RpcServiceImpl();
+        //注册拦截器
+        rpcService.setInterceptorIf(new RpcServerIntercepterTest());
+        RpcServer rpc = new RpcServer(8090, rpcService);
         rpc.start();
     }
 }
