@@ -1,5 +1,7 @@
 package com.cecd.sdk.rpc;
 
+import com.cecd.sdk.rpc.interceptor.ClientInterceptor;
+
 public interface RpcModuleIf {
 
     public int getServiceId();

@@ -1,4 +1,4 @@
-package com.cecd.sdk.rpc;
+package com.cecd.sdk.rpc.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cecd.sdk.thrift.ResponseData;

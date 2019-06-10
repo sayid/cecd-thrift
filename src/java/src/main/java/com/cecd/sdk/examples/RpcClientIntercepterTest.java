@@ -1,6 +1,6 @@
 package com.cecd.sdk.examples;
 
-import com.cecd.sdk.rpc.ClientInterceptor;
+import com.cecd.sdk.rpc.interceptor.ClientInterceptor;
 
 import java.util.HashMap;
 import java.util.Map;

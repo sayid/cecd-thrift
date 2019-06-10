@@ -2,7 +2,7 @@ package com.cecd.sdk.examples;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.cecd.sdk.rpc.ServerInterceptor;
+import com.cecd.sdk.rpc.interceptor.ServerInterceptor;
 import com.cecd.sdk.thrift.ResponseData;
 
 import java.util.HashMap;
