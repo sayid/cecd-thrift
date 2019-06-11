@@ -1,3 +1,5 @@
+import com.cecd.sdk.examples.testcenter.TestCenter;
+import com.cecd.sdk.examples.testcenter.TestService;
 import com.cecd.sdk.examples.usercenter.Libraries.MemberLib;
 import com.cecd.sdk.examples.usercenter.Models.MemberModel;
 import com.cecd.sdk.examples.usercenter.UserCenter;
@@ -20,5 +22,14 @@ public class RpcTest {
         System.out.println(userCenter.getLang());
         MemberLib memberLib = userCenter.getRpc(MemberLib.class);
         MemberModel member = memberLib.getSimpleMemberById(1);
+    }
+
+    @Test
+    public void testTest() {
+        TestCenter testCenter = new TestCenter();
+        testCenter.setHost("127.0.0.1").setPort(8090);
+        System.out.println(testCenter.getLang());
+        TestService test = testCenter.getRpc(TestService.class);
+        System.out.println(test.test("alibaba"));
     }
 }
