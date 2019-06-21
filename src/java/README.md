@@ -106,3 +106,4 @@ System.out.println(testCenter.getLang());
 TestService test = testCenter.getRpc(TestService.class);
 System.out.println(test.test("alibaba"));
 ```
+    可以手动设置服务器的ip和端口信息
