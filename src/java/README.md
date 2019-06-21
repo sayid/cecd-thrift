@@ -25,20 +25,81 @@ public class Main {
 }
 ```
 
-三、定义接口
+三、定义接口(具体编码请参照demo----examples包下)
+```aidl
+package com.cecd.sdk.examples.testcenter;
+
+import com.cecd.sdk.rpc.RpcDoc;
+
+//对应服务端具体的业务类
+@RpcDoc("com.cecd.sdk.examples.servers.test")
+public interface TestService {
+     //定义方法
+    public String test(String test);
+}
+
+```
+
+四、编写服务端(具体编码请参照demo----examples包下)
+
+```aidl
+package com.cecd.sdk.examples.servers;
+
+import java.util.Map;
+import com.cecd.sdk.examples.testcenter.TestService;
+
+public class Test implements TestService{
+
+    //实现方法
+    public String test(String test) {
+        return test + "124";
+    }
+}
+
+```
+
+五、编写客户端sdk(具体编码请参照demo----examples包下)
+
+```aidl
+
+package com.cecd.sdk.examples.testcenter;
+
+import com.cecd.sdk.examples.RpcClientIntercepterTest;
+import com.cecd.sdk.rpc.RpcDoc;
+import com.cecd.sdk.rpc.RpcFactory;
+import com.cecd.sdk.rpc.RpcModuleAbstract;
 
 
-四、编写服务端
+public class TestCenter extends RpcModuleAbstract {
 
+    public TestCenter() {
+        
+        //设置客户端拦截器   
+        this.setInterceptor(new RpcClientIntercepterTest());
+        
+        //设置该模块id
+        this.setServiceId(1005);
+        //设置该模块名称
+        this.setServiceName("user-center");
+        //设置服务端预研类型
+        this.setLang("java");
+        
+        //将客户端放入rpc工厂中统一维护
+        RpcFactory.addService(this);
+    }
+    
+}
 
-
-五、编写客户端(具体编码请参照demo----examples包下)
-
-
+```
 
 
 六、发起调用
 ```aidl
+
+import com.cecd.sdk.examples.testcenter.TestCenter;
+import com.cecd.sdk.examples.testcenter.TestService;
+
+
 TestCenter testCenter = new TestCenter();
 testCenter.setHost("127.0.0.1").setPort(8090);
 System.out.println(testCenter.getLang());

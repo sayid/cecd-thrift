@@ -17,5 +17,4 @@ public class TestCenter extends RpcModuleAbstract {
         RpcFactory.addService(this);
     }
 
-
 }
