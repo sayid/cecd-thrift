@@ -20,6 +20,8 @@ trait RpcModuleTrait
 
     private $clientInterceptor;//拦截器
 
+    private $actionType;
+
 
     /**
      * 检查服务器，返回ok标示正常
