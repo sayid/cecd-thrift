@@ -99,6 +99,7 @@ class Rpc
                 $start = microtime_float();
                 if ($this->rpcModule->getActionMode()) {
                     //异步调用
+                    $this->rpcModule->setMode(0);//重置为同步模式
                     $client->send_callRpc($classname, $methodName, $args, $extra);
                     return true;
                 }
