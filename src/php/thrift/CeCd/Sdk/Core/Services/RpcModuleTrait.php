@@ -20,7 +20,7 @@ trait RpcModuleTrait
 
     private $clientInterceptor;//拦截器
 
-    private $actionType;
+    private $actionType = 0;
 
 
     /**
