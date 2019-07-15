@@ -55,13 +55,13 @@ trait RpcModuleTrait
      * @param int $actionType
      * @return $this
      */
-    public function setMode(int $actionType = 0)
+    public function setMode(int $actionType = 0) : RpcModuleIf
     {
         $this->actionType = $actionType;
         return $this;
     }
 
-    public function getActionMode()
+    public function getActionMode() : int
     {
         return $this->actionType;
     }
