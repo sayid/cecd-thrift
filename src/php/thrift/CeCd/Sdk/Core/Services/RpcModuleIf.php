@@ -26,4 +26,9 @@ interface RpcModuleIf
     public function getLang() : string;
 
     public function getClientInterceptor() : string;
+
+    public function setMode(int $actionType) : RpcModuleIf;
+
+    public function getActionMode() : int;
+
 }
