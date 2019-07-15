@@ -101,6 +101,10 @@ class Rpc
                     //异步调用
                     $this->rpcModule->setMode(0);//重置为同步模式
                     $client->send_callRpc($classname, $methodName, $args, $extra);
+                    if (isset($clientInterceptor)
+                        && method_exists($clientInterceptor, 'after')) {
+                        $clientInterceptor->after(null, $classname, $methodName, 0);
+                    }
                     return true;
                 }
                 $res = $client->callRpc($classname, $methodName, $args, $extra);
