@@ -11,7 +11,7 @@ namespace Thrift\CeCd\Sdk\Core\Services;
 
 interface RpcModuleIf
 {
-    public function getHost();
+    public function getHost() : string;
 
     public function getPort() : int;
 
