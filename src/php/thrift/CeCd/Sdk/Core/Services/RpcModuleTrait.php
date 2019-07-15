@@ -16,6 +16,8 @@ trait RpcModuleTrait
 
     private $port;
 
+    private $actionType;
+
     public function __construct()
     {
     
@@ -46,6 +48,22 @@ trait RpcModuleTrait
             $class_load = $packge . "\Models\\".$class;
         }
         return new Rpc($class_load, $this);;
+    }
+
+    /**
+     * 设置同步/异步请求 默认同步
+     * @param int $actionType
+     * @return $this
+     */
+    public function setMode(int $actionType = 0)
+    {
+        $this->actionType = $actionType;
+        return $this;
+    }
+
+    public function getActionMode()
+    {
+        return $this->actionType;
     }
 
     /**

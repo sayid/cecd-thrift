@@ -97,6 +97,11 @@ class Rpc
                 $protocol = new TBinaryProtocol($transport);
                 $client = new RpcServiceClient($protocol);
                 $start = microtime_float();
+                if ($this->rpcModule->getActionMode()) {
+                    //异步调用
+                    $client->send_callRpc($classname, $methodName, $args, $extra);
+                    return true;
+                }
                 $res = $client->callRpc($classname, $methodName, $args, $extra);
                 $used_time = microtime_float() - $start;
                 //用完之后放回连接池中
@@ -161,7 +166,6 @@ class Rpc
             $classpath = app()->offsetGet($this->rpcClass);
             $method = app()->offsetGet($this->rpcClass.$name);
         }
-
         $res = $this->callRpc($classpath, $method, $arguments);
         return $res;
     }
