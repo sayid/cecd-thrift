@@ -43,7 +43,6 @@ class RpcServiceHandle implements RpcServiceIf {
         $fromUrl = $extra['from_url'] ?? "";
         $from_service_id = $extra['from_service_id'] ?? "";
         $form_request_id = $extra['form_request_id'] ?? "";
-
         /*if ($client_service_id && $client_service_id != env("SERVICE_ID")) {
             //客户端的service_id不匹配与服务器的service_id
             $value = [

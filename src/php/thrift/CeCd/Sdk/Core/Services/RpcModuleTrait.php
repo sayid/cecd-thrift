@@ -138,20 +138,4 @@ trait RpcModuleTrait
     {
         return $this->actionType;
     }
-
-    /** 设置调试模式
-     * @param bool $isDebug
-     * @return RpcModuleIf
-     */
-    public function setDebug(bool $isDebug = false) : RpcModuleIf
-    {
-        $this->debug = $isDebug;
-        return $this;
-    }
-
-    public function getDebug() : bool
-    {
-        return $this->debug;
-    }
 }
-
