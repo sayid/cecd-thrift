@@ -31,4 +31,8 @@ interface RpcModuleIf
 
     public function getActionMode() : int;
 
+    public function setDebug(bool $isDebug = false) : RpcModuleIf;
+
+    public function getDebug() : bool;
+
 }
