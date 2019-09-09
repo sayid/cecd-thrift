@@ -22,6 +22,7 @@ trait RpcModuleTrait
 
     private $actionType = 0;
 
+    private $debug = false;
 
     /**
      * 检查服务器，返回ok标示正常
@@ -136,6 +137,21 @@ trait RpcModuleTrait
     public function getActionMode() : int
     {
         return $this->actionType;
+    }
+
+    /** 设置调试模式
+     * @param bool $isDebug
+     * @return RpcModuleIf
+     */
+    public function setDebug(bool $isDebug = false) : RpcModuleIf
+    {
+        $this->debug = $isDebug;
+        return $this;
+    }
+
+    public function getDebug() : bool
+    {
+        return $this->debug;
     }
 }
 
