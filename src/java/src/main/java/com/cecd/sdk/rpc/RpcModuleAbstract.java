@@ -16,6 +16,8 @@ import java.util.Map;
 
 public abstract class RpcModuleAbstract implements RpcModuleIf  {
 
+    private boolean debug = false;
+
     private int serviceId;
 
     private String serviceName;
@@ -162,5 +164,13 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
         Object object = (T) Proxy.newProxyInstance(clazz.getClassLoader(),
                 new Class[]{clazz}, handler );
         return (T)object;
+    }
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
+    }
+
+    public boolean getDebug() {
+        return debug;
     }
 }
