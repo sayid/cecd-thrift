@@ -131,7 +131,10 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
                 throw new NullPointerException("未定义rpc"+className);
             }
             String classpath = rpcDoc.value();
-            System.out.println("call rpc:" + classpath);
+            if (rpcLoader.getDebug()) {
+                System.out.println("extraData"+extraData);
+                System.out.println("call rpc:" + classpath);
+            }
             TTransport transport = null;
             ResponseData result = null;
             if (rpcLoader.getTimeout() > 0) {
@@ -149,8 +152,9 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
 
             result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), JSONObject.toJSONString(extraData));
             transport.close();
-            System.out.println("Thrift client result=" + result);
-
+            if (rpcLoader.getDebug()) {
+                System.out.println("Thrift client result=" + result);
+            }
             Type type = method.getReturnType();
 
             return JSONObject.parseObject(result.getData(), type);

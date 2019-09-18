@@ -25,4 +25,8 @@ public interface RpcModuleIf {
     public void setInterceptor(ClientInterceptor interceptor);
 
     public ClientInterceptor getInterceptor();
+
+    public void setDebug(boolean debug);
+
+    public boolean getDebug();
 }
