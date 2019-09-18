@@ -37,8 +37,8 @@ class RpcServiceHandle implements RpcServiceIf {
             ];
             return new ResponseData($value);
         }
-        $arglist = ceRpcDecode($arglist);
-        $extra = ceRpcDecode($extra);
+        $arglist = ceRpcDecode($arglist) ?? [];
+        $extra = ceRpcDecode($extra) ?? [];
         $client_service_id = $extra['self_id'] ?? 0;
         $fromUrl = $extra['from_url'] ?? "";
         $from_service_id = $extra['from_service_id'] ?? "";
