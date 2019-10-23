@@ -7,15 +7,18 @@ import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-/**
- * rpc服务类
- */
+@Component
 public class RpcServer {
 
     private int port;
 
     RpcService.Iface rpcService;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcServer.class);
 
     public RpcServer(int port, RpcService.Iface rpcService) {
         this.port = port;
@@ -26,7 +29,7 @@ public class RpcServer {
 
         try {
             TProcessor processor = new RpcService.Processor(rpcService);
-            System.out.println("Rpc Server start...");
+            LOGGER.info("Rpc Server start...");
             TNonblockingServerSocket tnbSocketTransport = new TNonblockingServerSocket(port);
             TNonblockingServer.Args tnbArgs = new TNonblockingServer.Args(
                     tnbSocketTransport);
@@ -39,7 +42,7 @@ public class RpcServer {
             server.serve();
 
         } catch (Exception e) {
-            System.out.println("Rpc Server start error");
+            LOGGER.info("Rpc Server start error");
             e.printStackTrace();
         }
     }
