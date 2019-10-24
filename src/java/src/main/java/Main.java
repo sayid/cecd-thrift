@@ -8,7 +8,7 @@ public class Main {
         RpcServiceImpl rpcService = new RpcServiceImpl();
         //注册拦截器
         rpcService.setInterceptorIf(new RpcServerIntercepterTest());
-        RpcServer rpc = new RpcServer(8090, rpcService);
-        rpc.start();
+        RpcServer rpc = new RpcServer();
+        rpc.run();
     }
 }
