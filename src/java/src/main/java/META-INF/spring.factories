@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.cecd.sdk.rpc.BeanFactory,com.cecd.sdk.rpc.RpcServer,com.cecd.sdk.rpc.RpcServiceImpl

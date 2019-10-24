@@ -9,27 +9,23 @@ import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RpcServer {
+public class RpcServer implements Runnable {
 
-    private int port;
-
-    RpcService.Iface rpcService;
+    @Autowired
+    RpcService.Iface rpcServiceImpl;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcServer.class);
 
-    public RpcServer(int port, RpcService.Iface rpcService) {
-        this.port = port;
-        this.rpcService = rpcService;
-    }
-
-    public void start() {
-
+    @Override
+    public void run() {
+        int port = 8090;
         try {
-            TProcessor processor = new RpcService.Processor(rpcService);
-            LOGGER.info("Rpc Server start...");
+            TProcessor processor = new RpcService.Processor(rpcServiceImpl);
+            LOGGER.info("Rpc Server start... port:" + port);
             TNonblockingServerSocket tnbSocketTransport = new TNonblockingServerSocket(port);
             TNonblockingServer.Args tnbArgs = new TNonblockingServer.Args(
                     tnbSocketTransport);

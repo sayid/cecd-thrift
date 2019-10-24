@@ -6,14 +6,20 @@ import com.cecd.sdk.rpc.interceptor.ServerInterceptor;
 import com.cecd.sdk.thrift.InvalidException;
 import com.cecd.sdk.thrift.ResponseData;
 import com.cecd.sdk.thrift.RpcService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+@Component
 public class RpcServiceImpl implements RpcService.Iface {
 
     private ServerInterceptor interceptor;
+
+    @Autowired
+    private BeanFactory beanFactory;
 
     public void setInterceptorIf(ServerInterceptor interceptorIf) {
         this.interceptor = interceptorIf;
@@ -58,7 +64,7 @@ public class RpcServiceImpl implements RpcService.Iface {
                     argsTypes[index] = Array.class;
                 } else if (type.equals("JSONObject")) {
                     //复杂对象只能使用json对象传递
-                    argsTypes[index] = com.alibaba.fastjson.JSONObject.class;
+                    argsTypes[index] = JSONObject.class;
                 } else {
                     //只允许基础类型
                     responseData.setCode(1000);
@@ -83,19 +89,13 @@ public class RpcServiceImpl implements RpcService.Iface {
         }
 
         if (responseData.getCode() == 0) {
-            Object object = null;
+            RpcServiceInterface rpcServiceInterface = null;
             try {
-                object = clazz.newInstance();
-            } catch (InstantiationException e) {
+                rpcServiceInterface = (RpcServiceInterface) beanFactory.getApplicationContext().getBean(clazz);
+            } catch (Exception e) {
                 e.printStackTrace();
                 responseData.setCode(1000);
-                responseData.setEx(e.getMessage());
-                responseData.setStrace(e.getStackTrace().toString());
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                responseData.setCode(1000);
-                responseData.setEx(e.getMessage());
-                responseData.setStrace(e.getStackTrace().toString());
+                responseData.setEx(classname + " is not bean");
             }
             if (responseData.getCode() == 0) {
                 Method m = null;
@@ -109,7 +109,7 @@ public class RpcServiceImpl implements RpcService.Iface {
                 if (responseData.getCode() == 0) {
                     Object data = null;
                     try {
-                        data = m.invoke(object, argsObj);
+                        data = m.invoke(rpcServiceInterface, argsObj);
                         System.out.println("result is " + data);
                         responseData.setCode(0);
                         responseData.setData(JSONObject.toJSONString(data));
