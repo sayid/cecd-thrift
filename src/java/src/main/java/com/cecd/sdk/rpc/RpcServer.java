@@ -12,17 +12,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
-public class RpcServer implements Runnable {
+public abstract class RpcServer implements Runnable {
 
     @Autowired
     RpcServiceImpl rpcServiceImpl;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcServer.class);
 
-    @Override
-    public void run() {
-        int port = 8090;
+    public RpcServer() {
+
+    }
+
+    public void start(int port) {
         try {
             TProcessor processor = new RpcService.Processor(rpcServiceImpl);
             LOGGER.info("Rpc Server start... port:" + port);
