@@ -8,11 +8,11 @@
 
 namespace Thrift\CeCd\Sdk\Core\Client;
 
-use Thrift\CeCd\Sdk\Core\Services\RpcModuleIf;
-use Thrift\Protocol\TBinaryProtocol;
-use Thrift\Exception\TException;
-use Thrift\CeCd\Sdk\RpcServiceClient;
 use Thrift\CeCd\Sdk\Core\RpcArrayException;
+use Thrift\CeCd\Sdk\Core\Services\RpcModuleIf;
+use Thrift\CeCd\Sdk\RpcServiceClient;
+use Thrift\Exception\TException;
+use Thrift\Protocol\TBinaryProtocol;
 
 class Rpc
 {
@@ -56,12 +56,17 @@ class Rpc
                     //参数没有类型? java说这是耍流氓
                     throw new \Exception($classname.":".$method." parameter ".$parameter->getName()." must define type");
                 }
+                //参数名字数组
+                $extraData['parameterNames'] = $parameter->getName();
                 switch ($parameter->getType()->getName()) {
                     case "string":
                         $extraData['parameterTypes'][] = "String";
                         break;
                     case "int":
                         $extraData['parameterTypes'][] = "Integer";
+                        break;
+                    case "long":
+                        $extraData['parameterTypes'][] = "Long";
                         break;
                     case "float":
                         $extraData['parameterTypes'][] = "Float";
@@ -73,7 +78,7 @@ class Rpc
                         $extraData['parameterTypes'][] = "Double";
                         break;
                     case "array"://顺序数组
-                        $this->extraData['parameterTypes'][] = "Array";
+                        $extraData['parameterTypes'][] = "Array";
                         break;
                     case "object"://高级对应java的jsonobject对象，map等字典统一用这种方式
                         $extraData['parameterTypes'][] = "JSONObject";
