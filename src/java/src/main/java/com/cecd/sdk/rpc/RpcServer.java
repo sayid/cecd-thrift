@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class RpcServer implements Runnable {
 
     @Autowired
-    RpcService.Iface rpcServiceImpl;
+    RpcServiceImpl rpcServiceImpl;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RpcServer.class);
 
