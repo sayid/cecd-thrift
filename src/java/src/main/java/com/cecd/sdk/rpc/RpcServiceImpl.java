@@ -19,7 +19,7 @@ public class RpcServiceImpl implements RpcService.Iface {
     private ServerInterceptor interceptor;
 
     @Autowired
-    private BeanFactory beanFactory;
+    RpcBeanFactory rpcBeanFactory;
 
     public void setInterceptorIf(ServerInterceptor interceptorIf) {
         this.interceptor = interceptorIf;
@@ -91,7 +91,7 @@ public class RpcServiceImpl implements RpcService.Iface {
         if (responseData.getCode() == 0) {
             RpcServiceInterface rpcServiceInterface = null;
             try {
-                rpcServiceInterface = (RpcServiceInterface) beanFactory.getApplicationContext().getBean(clazz);
+                rpcServiceInterface = (RpcServiceInterface) rpcBeanFactory.getApplicationContext().getBean(clazz);
             } catch (Exception e) {
                 e.printStackTrace();
                 responseData.setCode(1000);

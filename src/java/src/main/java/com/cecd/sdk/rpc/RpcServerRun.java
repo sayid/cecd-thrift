@@ -9,21 +9,17 @@ import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-public abstract class RpcServer implements Runnable {
+public class RpcServerRun {
 
-    @Autowired
-    RpcServiceImpl rpcServiceImpl;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcServerRun.class);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RpcServer.class);
-
-    public RpcServer() {
-
-    }
-
-    public void start(int port) {
+    /**
+     *
+     * @param port
+     * @param rpcServiceImpl 需要通过bean获取到的类
+     */
+    public static void start(int port, RpcServiceImpl rpcServiceImpl) {
         try {
             TProcessor processor = new RpcService.Processor(rpcServiceImpl);
             LOGGER.info("Rpc Server start... port:" + port);

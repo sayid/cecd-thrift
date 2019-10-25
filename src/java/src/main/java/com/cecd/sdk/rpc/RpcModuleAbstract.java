@@ -9,6 +9,8 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.*;
 import java.util.HashMap;
@@ -32,6 +34,8 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
 
     //客户端拦截器
     private ClientInterceptor interceptor;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcModuleAbstract.class);
 
     public int getServiceId() {
         return serviceId;
@@ -131,17 +135,15 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
                 throw new NullPointerException("未定义rpc"+className);
             }
             String classpath = rpcDoc.value();
-            if (rpcLoader.getDebug()) {
-                System.out.println("extraData"+extraData);
-                System.out.println("call rpc:" + classpath);
-            }
+            LOGGER.debug("extraData"+extraData);
+            LOGGER.debug("call rpc:" + classpath);
             TTransport transport = null;
             ResponseData result = null;
             if (rpcLoader.getTimeout() > 0) {
-                System.out.println("rpc->host:" + rpcLoader.getHost() + " port:" + rpcLoader.getPort() + " timeout:" + rpcLoader.getTimeout());
+                LOGGER.debug("rpc->host:" + rpcLoader.getHost() + " port:" + rpcLoader.getPort() + " timeout:" + rpcLoader.getTimeout());
                 transport = new TFramedTransport(new TSocket(rpcLoader.getHost(), rpcLoader.getPort(), rpcLoader.getTimeout()));
             } else {
-                System.out.println("rpc->host:" + rpcLoader.getHost() + " port:" + rpcLoader.getPort());
+                LOGGER.debug("rpc->host:" + rpcLoader.getHost() + " port:" + rpcLoader.getPort());
                 transport = new TFramedTransport(new TSocket(rpcLoader.getHost(), rpcLoader.getPort()));
             }
             // 协议要和服务端一致
@@ -152,9 +154,8 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
 
             result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), JSONObject.toJSONString(extraData));
             transport.close();
-            if (rpcLoader.getDebug()) {
-                System.out.println("Thrift client result=" + result);
-            }
+            LOGGER.debug("Thrift client result=" + result);
+
             Type type = method.getReturnType();
 
             return JSONObject.parseObject(result.getData(), type);

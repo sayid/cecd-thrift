@@ -3,7 +3,6 @@ package com.cecd.sdk.examples.usercenter;
 import com.cecd.sdk.examples.RpcClientIntercepterTest;
 import com.cecd.sdk.rpc.RpcFactory;
 import com.cecd.sdk.rpc.RpcModuleAbstract;
-import com.cecd.sdk.rpc.RpcModuleIf;
 
 public class UserCenter extends RpcModuleAbstract {
 
@@ -15,6 +14,4 @@ public class UserCenter extends RpcModuleAbstract {
         this.setLang("php");
         RpcFactory.addService(this);
     }
-
-
 }

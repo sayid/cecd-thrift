@@ -8,6 +8,8 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
 import java.lang.reflect.*;
@@ -18,8 +20,6 @@ import java.util.HashMap;
  */
 public class RpcFactory {
 
-    private static RpcClient rpcClient;
-
     private static Environment environment;
     /**
      * 注册rpc
@@ -27,6 +27,8 @@ public class RpcFactory {
     private static HashMap<String, RpcModuleIf> services = new HashMap();
 
     private static HashMap<String, String> rpcMap = new HashMap();
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RpcFactory.class);
 
     public static RpcModuleIf getServiceByRpc(String rpcName)
     {
@@ -53,19 +55,11 @@ public class RpcFactory {
      */
     public static void setEnvironment(Environment newEnvironment) {
         environment = newEnvironment;
+        LOGGER.info("environment config init");
     }
 
     public static Environment getEnvironment() {
         return environment;
-    }
-
-
-    public static void setRpcClient(RpcClient newRpcClient) {
-        rpcClient = newRpcClient;
-    }
-
-    public static RpcClient getRpcClient() {
-       return rpcClient;
     }
 
     public static <T> T getInstance(Class<T> clazz) {
