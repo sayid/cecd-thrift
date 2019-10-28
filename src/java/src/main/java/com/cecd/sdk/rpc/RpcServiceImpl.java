@@ -1,5 +1,6 @@
 package com.cecd.sdk.rpc;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cecd.sdk.rpc.interceptor.ServerInterceptor;
@@ -66,9 +67,15 @@ public class RpcServiceImpl implements RpcService.Iface {
                     //复杂对象只能使用json对象传递
                     argsTypes[index] = JSONObject.class;
                 } else {
-                    //只允许基础类型
-                    responseData.setCode(1000);
-                    responseData.setEx(classname + " method parameter type err");
+                    if (type.contains(".")) {
+                        //如果类型是一个实体类，则需要转换成对应的
+                        argsTypes[index] = Class.forName(type);
+                        argsObj[index] = JSONObject.parseObject(JSONObject.toJSONString(argsObj[index]), argsTypes[index]);
+                    } else {
+                        //只允许基础类型
+                        responseData.setCode(1000);
+                        responseData.setEx(classname + " method parameter type err");
+                    }
                 }
                 System.out.println(argsTypes[index].getName());
             }
