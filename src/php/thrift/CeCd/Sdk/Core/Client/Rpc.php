@@ -81,7 +81,14 @@ class Rpc
                         $extraData['parameterTypes'][] = "Array";
                         break;
                     case "object"://高级对应java的jsonobject对象，map等字典统一用这种方式
-                        $extraData['parameterTypes'][] = "JSONObject";
+                        if ($pos = strpos($method->getDocComment(), $parameter->getName())) {
+                            $str = substr($method->getDocComment(), 0, $pos - 1);
+                            $paramType = substr($str, strrpos($str, "@param") + 7);
+                        }
+                        if (empty($paramType) || ! $paramType) {
+                            $paramType = "JSONOBJECT";
+                        }
+                        $extraData['parameterTypes'][] = $paramType;
                         break;
                     default:
                         //只能定义简单的数据类型
