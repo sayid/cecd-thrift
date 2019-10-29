@@ -82,8 +82,8 @@ class Rpc
                         break;
                     case "object"://高级对应java的jsonobject对象，map等字典统一用这种方式
                         if ($pos = strpos($method->getDocComment(), $parameter->getName())) {
-                            $str = substr($method->getDocComment(), 0, $pos - 1);
-                            $paramType = substr($str, strrpos($str, "@param") + 7);
+                            $str = substr($method->getDocComment(), 0, $pos - 2);
+                            $paramType = trim(substr($str, strrpos($str, "@param") + 7));
                         }
                         if (empty($paramType) || ! $paramType) {
                             $paramType = "JSONOBJECT";
