@@ -86,7 +86,7 @@ class Rpc
                             $paramType = trim(substr($str, strrpos($str, "@param") + 7));
                         }
                         if (empty($paramType) || ! $paramType) {
-                            $paramType = "JSONOBJECT";
+                            $paramType = "JSONObject";
                         }
                         $extraData['parameterTypes'][] = $paramType;
                         break;
