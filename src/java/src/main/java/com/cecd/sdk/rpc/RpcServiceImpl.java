@@ -3,6 +3,7 @@ package com.cecd.sdk.rpc;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.cecd.sdk.rpc.interceptor.ServerInterceptor;
 import com.cecd.sdk.thrift.InvalidException;
 import com.cecd.sdk.thrift.ResponseData;

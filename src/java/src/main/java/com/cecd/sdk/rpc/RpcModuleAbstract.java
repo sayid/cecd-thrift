@@ -1,9 +1,12 @@
 package com.cecd.sdk.rpc;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.PropertyNamingStrategy;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.cecd.sdk.rpc.interceptor.ClientInterceptor;
 import com.cecd.sdk.thrift.ResponseData;
 import com.cecd.sdk.thrift.RpcService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
@@ -151,13 +154,14 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
 
             RpcService.Client client = new RpcService.Client(protocol);
             transport.open();
-
             result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), JSONObject.toJSONString(extraData));
             transport.close();
             LOGGER.debug("Thrift client result=" + result);
 
             Type type = method.getReturnType();
-
+            if (null == result.getData()) {
+                return null;
+            }
             return JSONObject.parseObject(result.getData(), type);
         }
     };

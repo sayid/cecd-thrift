@@ -4,6 +4,7 @@ com/cecd/sdk/thrift/RpcService$AsyncClient$callRpc_call.class
 com/cecd/sdk/thrift/RpcService$Client$Factory.class
 com/cecd/sdk/thrift/RpcService$AsyncProcessor$callRpc$1.class
 com/cecd/sdk/thrift/RpcService$Iface.class
+com/cecd/sdk/rpc/RpcBeanFactory.class
 com/cecd/sdk/thrift/InvalidException$InvalidExceptionStandardSchemeFactory.class
 com/cecd/sdk/rpc/RpcModuleAbstract.class
 com/cecd/sdk/thrift/RpcService$AsyncClient.class
@@ -20,11 +21,13 @@ com/cecd/sdk/rpc/RpcNetModel.class
 com/cecd/sdk/rpc/RpcServiceImpl.class
 com/cecd/sdk/thrift/RpcService$callRpc_args$callRpc_argsTupleScheme.class
 com/cecd/sdk/thrift/ResponseData$1.class
+com/cecd/sdk/rpc/RpcServiceInterface.class
 com/cecd/sdk/thrift/ResponseData$_Fields.class
 com/cecd/sdk/thrift/RpcService$callRpc_result$callRpc_resultTupleSchemeFactory.class
 com/cecd/sdk/thrift/RpcService$callRpc_args$callRpc_argsStandardSchemeFactory.class
 com/cecd/sdk/thrift/RpcService$callRpc_result$_Fields.class
 com/cecd/sdk/thrift/RpcService$AsyncProcessor.class
+com/cecd/sdk/rpc/RpcServerRun.class
 com/cecd/sdk/thrift/ResponseData$ResponseDataStandardSchemeFactory.class
 com/cecd/sdk/rpc/RpcInterface.class
 com/cecd/sdk/thrift/InvalidException$1.class

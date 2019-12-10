@@ -1,8 +1,9 @@
 import com.cecd.sdk.examples.testcenter.TestCenter;
 import com.cecd.sdk.examples.testcenter.TestService;
 import com.cecd.sdk.examples.usercenter.Libraries.MemberLib;
-import com.cecd.sdk.examples.usercenter.Models.MemberModel;
 import com.cecd.sdk.examples.usercenter.UserCenter;
+import com.cecd.sdk.examples.usercenter.entity.Member;
+import com.cecd.sdk.examples.usercenter.rpcs.MemberLibRpc;
 import com.cecd.sdk.rpc.RpcFactory;
 import org.apache.catalina.User;
 import org.junit.Before;
@@ -18,10 +19,12 @@ public class RpcTest {
     @Test
     public void testUser() {
         UserCenter userCenter = RpcFactory.getInstance(UserCenter.class);
-        userCenter.setHost("192.168.5.190").setPort(1005);
+        userCenter.setHost("192.168.5.191").setPort(41005);
         System.out.println(userCenter.getLang());
-        MemberLib memberLib = userCenter.getRpc(MemberLib.class);
-        MemberModel member = memberLib.getSimpleMemberById(1);
+        MemberLibRpc memberLib = userCenter.getRpc(MemberLibRpc.class);
+        Member member = memberLib.getSimpleMemberById(100063433);
+        System.out.println(member.getMemberName());
+
     }
 
     @Test
