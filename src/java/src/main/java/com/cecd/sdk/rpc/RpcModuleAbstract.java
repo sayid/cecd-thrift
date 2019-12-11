@@ -1,6 +1,7 @@
 package com.cecd.sdk.rpc;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cecd.sdk.rpc.exceptions.BaseRpcException;
 import com.cecd.sdk.rpc.interceptor.ClientInterceptor;
 import com.cecd.sdk.thrift.ResponseData;
 import com.cecd.sdk.thrift.RpcService;
@@ -154,7 +155,9 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
             result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), JSONObject.toJSONString(extraData));
             transport.close();
             LOGGER.debug("Thrift client result=" + result);
-
+            if (result.getCode() > 0) {
+                throw new BaseRpcException(result.getCode(), result.getMsg(), result.getEx());
+            }
             Type type = method.getReturnType();
             if (null == result.getData()) {
                 return null;
