@@ -9,7 +9,7 @@ public class CeRpcException extends Exception {
         super(message);
         this.message = message;
         this.stackTrace = stackTrace;
-        this.ex = stackTrace.toString();
+        this.ex = stackTraceToString(stackTrace);
     }
     public CeRpcException(long code, String message, String ex) {
         super(message);
@@ -44,4 +44,15 @@ public class CeRpcException extends Exception {
     public long getCode() {
         return code;
     }
+
+    private String stackTraceToString(StackTraceElement[] stackTraceElements)
+    {
+        StringBuilder sb = new StringBuilder();
+        for(StackTraceElement stackTraceElemen : stackTraceElements)
+        {
+            sb.append(stackTraceElemen.toString()+"\n");
+        }
+        return sb.toString();
+    }
+
 }
