@@ -13,6 +13,7 @@ com/cecd/sdk/thrift/RpcService$callRpc_args$_Fields.class
 com/cecd/sdk/thrift/ResponseData$ResponseDataTupleScheme.class
 com/cecd/sdk/thrift/RpcService$callRpc_result$callRpc_resultTupleScheme.class
 com/cecd/sdk/rpc/RpcDoc.class
+com/cecd/sdk/rpc/exceptions/BaseRpcException.class
 com/cecd/sdk/thrift/RpcService$Processor.class
 com/cecd/sdk/thrift/InvalidException$InvalidExceptionStandardScheme.class
 com/cecd/sdk/rpc/RpcModuleAbstract$1.class

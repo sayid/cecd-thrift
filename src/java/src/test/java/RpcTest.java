@@ -1,13 +1,10 @@
 import com.cecd.sdk.examples.testcenter.TestCenter;
 import com.cecd.sdk.examples.testcenter.TestService;
-import com.cecd.sdk.examples.usercenter.Libraries.MemberLib;
 import com.cecd.sdk.examples.usercenter.UserCenter;
 import com.cecd.sdk.examples.usercenter.entity.Member;
 import com.cecd.sdk.examples.usercenter.rpcs.MemberLibRpc;
 import com.cecd.sdk.rpc.RpcFactory;
 import com.cecd.sdk.rpc.exceptions.BaseRpcException;
-import org.apache.catalina.User;
-import org.apache.thrift.transport.TTransportException;
 import org.junit.Before;
 import org.junit.Test;
 
