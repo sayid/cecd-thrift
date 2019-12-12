@@ -75,7 +75,7 @@ public class RpcServiceImpl implements RpcService.Iface {
                     } else {
                         //只允许基础类型
                         responseData.setCode(1000);
-                        responseData.setEx(classname + " method parameter type err");
+                        responseData.setMsg(classname + " method parameter type err");
                     }
                 }
                 System.out.println(argsTypes[index].getName());
@@ -83,7 +83,8 @@ public class RpcServiceImpl implements RpcService.Iface {
         } catch (Exception e) {
             e.printStackTrace();
             responseData.setCode(1000);
-            responseData.setEx(classname + " method parameter type err");
+            responseData.setMsg(classname + " method parameter type err");
+            responseData.setEx(e.getMessage());
         }
 
         if (responseData.getCode() == 0) {
@@ -92,7 +93,8 @@ public class RpcServiceImpl implements RpcService.Iface {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 responseData.setCode(1000);
-                responseData.setEx(classname + " not found");
+                responseData.setMsg(classname + " not found");
+                responseData.setEx(e.getMessage());
             }
         }
 
@@ -103,7 +105,8 @@ public class RpcServiceImpl implements RpcService.Iface {
             } catch (Exception e) {
                 e.printStackTrace();
                 responseData.setCode(1000);
-                responseData.setEx(classname + " is not bean");
+                responseData.setMsg(classname + " is not bean");
+                responseData.setEx(e.getMessage());
             }
             if (responseData.getCode() == 0) {
                 Method m = null;
@@ -112,7 +115,8 @@ public class RpcServiceImpl implements RpcService.Iface {
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                     responseData.setCode(1000);
-                    responseData.setEx(classname + " method " + method + " not exist");
+                    responseData.setMsg(classname + " method " + method + " not exist");
+                    responseData.setEx(e.getMessage());
                 }
                 if (responseData.getCode() == 0) {
                     Object data = null;
@@ -121,16 +125,11 @@ public class RpcServiceImpl implements RpcService.Iface {
                         System.out.println("result is " + data);
                         responseData.setCode(0);
                         responseData.setData(JSONObject.toJSONString(data));
-                    } catch (IllegalAccessException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                         responseData.setCode(1000);
                         responseData.setEx(e.getMessage());
-                        responseData.setStrace(e.getStackTrace().toString());
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                        responseData.setCode(1000);
-                        responseData.setEx(e.getMessage());
-                        responseData.setStrace(e.getStackTrace().toString());
+                        responseData.setStrace(JSONObject.toJSONString(e.getStackTrace()));
                     }
                 }
             }
