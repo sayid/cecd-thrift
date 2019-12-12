@@ -3,6 +3,7 @@ package com.cecd.sdk.rpc;
 import com.alibaba.fastjson.JSONObject;
 import com.cecd.sdk.rpc.exceptions.BaseRpcException;
 import com.cecd.sdk.rpc.interceptor.ClientInterceptor;
+import com.cecd.sdk.thrift.InvalidException;
 import com.cecd.sdk.thrift.ResponseData;
 import com.cecd.sdk.thrift.RpcService;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -101,7 +102,7 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
 
     private static InvocationHandler handler = new InvocationHandler() {
 
-        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable, Exception {
+        public Object invoke(Object proxy, Method method, Object[] args) throws BaseRpcException {
 
             Class<?>[] classes = proxy.getClass().getInterfaces();
             String className = classes[0].getName();
@@ -151,8 +152,13 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
             TProtocol protocol = new TBinaryProtocol(transport);
 
             RpcService.Client client = new RpcService.Client(protocol);
-            transport.open();
-            result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), JSONObject.toJSONString(extraData));
+            try {
+                transport.open();
+                result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), JSONObject.toJSONString(extraData));
+            } catch (Exception e) {
+                throw new BaseRpcException(e.getMessage(), e.getStackTrace());
+            }
+
             transport.close();
             LOGGER.debug("Thrift client result=" + result);
             if (result.getCode() > 0) {

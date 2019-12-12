@@ -5,7 +5,9 @@ import com.cecd.sdk.examples.usercenter.UserCenter;
 import com.cecd.sdk.examples.usercenter.entity.Member;
 import com.cecd.sdk.examples.usercenter.rpcs.MemberLibRpc;
 import com.cecd.sdk.rpc.RpcFactory;
+import com.cecd.sdk.rpc.exceptions.BaseRpcException;
 import org.apache.catalina.User;
+import org.apache.thrift.transport.TTransportException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,9 +24,14 @@ public class RpcTest {
         userCenter.setHost("192.168.5.191").setPort(41005);
         System.out.println(userCenter.getLang());
         MemberLibRpc memberLib = userCenter.getRpc(MemberLibRpc.class);
-        Member member = memberLib.getSimpleMemberById(100063433);
-        System.out.println(member.getMemberName());
 
+        try {
+            Member member = memberLib.getSimpleMemberById(100063433);
+            System.out.println(member.getMemberName());
+        } catch (BaseRpcException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Test

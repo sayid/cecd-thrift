@@ -1,20 +1,47 @@
 package com.cecd.sdk.rpc.exceptions;
 
-import org.springframework.web.util.pattern.PathPattern;
-
 public class BaseRpcException extends Exception {
     private String message;
-    private long code;
     private String ex;
-    public BaseRpcException(long code, String message, String ex) {
+    private StackTraceElement[] stackTrace;
+    private long code = 1000;
+    public BaseRpcException(String message, StackTraceElement[] stackTrace) {
         super(message);
+        this.message = message;
+        this.stackTrace = stackTrace;
+        this.ex = stackTrace.toString();
+    }
+    public BaseRpcException(long code,String message, String ex) {
+        super(message);
+        this.message = message;
+        this.ex = ex;
         this.code = code;
+    }
+    public BaseRpcException(String message, String ex) {
+        super(message);
         this.message = message;
         this.ex = ex;
     }
-    public BaseRpcException(long code, String message) {
+    public BaseRpcException(String message) {
         super(message);
-        this.code = code;
         this.message = message;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public String getEx() {
+        return ex;
+    }
+
+    @Override
+    public StackTraceElement[] getStackTrace() {
+        return stackTrace;
+    }
+
+    public long getCode() {
+        return code;
     }
 }
