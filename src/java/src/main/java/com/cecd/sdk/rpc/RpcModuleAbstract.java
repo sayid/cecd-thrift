@@ -155,11 +155,14 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
             try {
                 transport.open();
                 result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), JSONObject.toJSONString(extraData));
+                transport.close();
             } catch (Exception e) {
+                LOGGER.info("rpc faild:" + e.getMessage());
                 throw new BaseRpcException(e.getMessage(), e.getStackTrace());
+            } finally {
+                transport.close();
             }
 
-            transport.close();
             LOGGER.debug("Thrift client result=" + result);
             if (result.getCode() > 0) {
                 throw new BaseRpcException(result.getCode(), result.getMsg(), result.getEx());

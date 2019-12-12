@@ -27,7 +27,7 @@ public class RpcServiceImpl implements RpcService.Iface {
         this.interceptor = interceptorIf;
     }
 
-    public ResponseData callRpc(String classname, String method, String arglist, String extra) throws InvalidException, org.apache.thrift.TException {
+    public ResponseData callRpc(String classname, String method, String arglist, String extra) {
 
         Object[] argsObj =  JSONObject.parseArray(arglist).toArray();
         JSONObject extraObj = JSONObject.parseObject(extra);

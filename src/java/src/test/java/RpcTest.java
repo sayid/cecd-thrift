@@ -29,7 +29,6 @@ public class RpcTest {
             Member member = memberLib.getSimpleMemberById(100063433);
             System.out.println(member.getMemberName());
         } catch (BaseRpcException e) {
-            System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }
