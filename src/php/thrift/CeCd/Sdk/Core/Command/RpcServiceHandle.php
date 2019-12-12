@@ -8,9 +8,8 @@
 
 namespace Thrift\CeCd\Sdk\Core\Command;
 use GouuseCore\Libraries\CodeLib;
-
-use Thrift\CeCd\Sdk\RpcServiceIf;
 use Thrift\CeCd\Sdk\ResponseData;
+use Thrift\CeCd\Sdk\RpcServiceIf;
 
 /**
  * 服务端类
@@ -20,6 +19,8 @@ use Thrift\CeCd\Sdk\ResponseData;
 class RpcServiceHandle implements RpcServiceIf {
 
     private $serverInterceptor;
+
+    private $rpcCall = null;
 
     public function setServerInterceptorClass($serverInterceptorClass)
     {
@@ -78,9 +79,14 @@ class RpcServiceHandle implements RpcServiceIf {
                     return $before;
                 }
             }
-
             $start = microtime_float();
-            $data = call_user_func_array(array($obj, $method), $arglist);
+
+            if ($this->serverInterceptor && method_exists($this->serverInterceptor, "doCallable")) {
+                $data = $this->serverInterceptor->doCallable($obj, $method, $arglist);
+            } else {
+                $data = call_user_func_array(array($obj, $method), $arglist);
+            }
+
             $runtime = microtime_float() - $start;
             $value = [
                 "code" => 0,
