@@ -1,9 +1,8 @@
 package com.cecd.sdk.rpc;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cecd.sdk.rpc.exceptions.BaseRpcException;
+import com.cecd.sdk.rpc.exceptions.CeRpcException;
 import com.cecd.sdk.rpc.interceptor.ClientInterceptor;
-import com.cecd.sdk.thrift.InvalidException;
 import com.cecd.sdk.thrift.ResponseData;
 import com.cecd.sdk.thrift.RpcService;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -102,7 +101,7 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
 
     private static InvocationHandler handler = new InvocationHandler() {
 
-        public Object invoke(Object proxy, Method method, Object[] args) throws BaseRpcException {
+        public Object invoke(Object proxy, Method method, Object[] args) throws CeRpcException {
 
             Class<?>[] classes = proxy.getClass().getInterfaces();
             String className = classes[0].getName();
@@ -158,14 +157,14 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
                 transport.close();
             } catch (Exception e) {
                 LOGGER.info("rpc faild:" + e.getMessage());
-                throw new BaseRpcException(e.getMessage(), e.getStackTrace());
+                throw new CeRpcException(e.getMessage(), e.getStackTrace());
             } finally {
                 transport.close();
             }
 
             LOGGER.debug("Thrift client result=" + result);
             if (result.getCode() > 0) {
-                throw new BaseRpcException(result.getCode(), result.getMsg(), result.getEx());
+                throw new CeRpcException(result.getCode(), result.getMsg(), result.getEx());
             }
             Type type = method.getReturnType();
             if (null == result.getData()) {

@@ -1,28 +1,28 @@
 package com.cecd.sdk.rpc.exceptions;
 
-public class BaseRpcException extends Exception {
+public class CeRpcException extends Exception {
     private String message;
     private String ex;
     private StackTraceElement[] stackTrace;
     private long code = 1000;
-    public BaseRpcException(String message, StackTraceElement[] stackTrace) {
+    public CeRpcException(String message, StackTraceElement[] stackTrace) {
         super(message);
         this.message = message;
         this.stackTrace = stackTrace;
         this.ex = stackTrace.toString();
     }
-    public BaseRpcException(long code,String message, String ex) {
+    public CeRpcException(long code, String message, String ex) {
         super(message);
         this.message = message;
         this.ex = ex;
         this.code = code;
     }
-    public BaseRpcException(String message, String ex) {
+    public CeRpcException(String message, String ex) {
         super(message);
         this.message = message;
         this.ex = ex;
     }
-    public BaseRpcException(String message) {
+    public CeRpcException(String message) {
         super(message);
         this.message = message;
     }
