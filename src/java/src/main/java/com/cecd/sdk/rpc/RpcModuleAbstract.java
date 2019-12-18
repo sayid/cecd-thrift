@@ -107,7 +107,6 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
             String className = classes[0].getName();
 
             RpcModuleIf rpcLoader = RpcFactory.getServiceByRpc(className);
-            System.out.println(rpcLoader.getHost());
             if (null == rpcLoader.getHost() || rpcLoader.getHost().length() == 0) {
                 //如果没有设置host和port则读取公共配置中的
                 if (null == RpcFactory.getEnvironment()) {
