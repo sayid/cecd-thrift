@@ -6,7 +6,7 @@
 
     <groupId>cecd-sdk</groupId>
     <artifactId>rpc</artifactId>
-    <version>0.0.40</version>
+    <version>0.0.41</version>
     <packaging>jar</packaging>
 
     <name>ce sdk</name>
