@@ -169,6 +169,7 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
             if (null == result.getData()) {
                 return null;
             }
+            //return mapper.readValue(result.getData(), (Class)type);
             return JSONObject.parseObject(result.getData(), type);
         }
     };
