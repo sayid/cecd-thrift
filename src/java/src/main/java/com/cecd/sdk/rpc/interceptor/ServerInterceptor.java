@@ -1,8 +1,8 @@
 package com.cecd.sdk.rpc.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
 import com.cecd.sdk.thrift.ResponseData;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,7 +10,7 @@ import java.util.Map;
  */
 public abstract class ServerInterceptor {
 
-    abstract public Map before(String classname, String method, Object[] arglist, JSONObject extra);
+    abstract public Map before(String classname, String method, List<Object> arglist, Map<String, Object> extra);
 
     abstract public ResponseData after(ResponseData responseData);
 }

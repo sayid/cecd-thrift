@@ -1,17 +1,19 @@
 package com.cecd.sdk.examples.usercenter.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.cecd.sdk.rpc.RpcEntityIf;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Member implements RpcEntityIf {
 
-    @JSONField(name = "member_id")
+    @JsonProperty("member_id")
     private int memberId;
 
-    @JSONField(name = "member_name")
+    @JsonProperty("member_name")
     private String memberName;
 
-    @JSONField(name = "mobile")
+    @JsonProperty("mobile")
     private String mobile;
 
     public int getMemberId() {

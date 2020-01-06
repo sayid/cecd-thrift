@@ -5,8 +5,14 @@ import com.cecd.sdk.examples.usercenter.entity.Member;
 import com.cecd.sdk.examples.usercenter.rpcs.MemberLibRpc;
 import com.cecd.sdk.rpc.RpcFactory;
 import com.cecd.sdk.rpc.exceptions.CeRpcException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RpcTest {
 
@@ -37,5 +43,20 @@ public class RpcTest {
         System.out.println(testCenter.getLang());
         TestService test = testCenter.getRpc(TestService.class);
         System.out.println(test.test("alibaba"));
+    }
+
+    @Test
+    public void testJackson() {
+        List<Object> arglist = new ArrayList<>();
+        arglist.add(1);
+        arglist.add("sss");
+        arglist.add(1);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            System.out.println(objectMapper.writeValueAsString(arglist));
+            arglist = objectMapper.readValue(objectMapper.writeValueAsString(arglist), ArrayList.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }

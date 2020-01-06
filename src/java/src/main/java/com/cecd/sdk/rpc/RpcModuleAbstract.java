@@ -1,10 +1,11 @@
 package com.cecd.sdk.rpc;
 
-import com.alibaba.fastjson.JSONObject;
 import com.cecd.sdk.rpc.exceptions.CeRpcException;
 import com.cecd.sdk.rpc.interceptor.ClientInterceptor;
 import com.cecd.sdk.thrift.ResponseData;
 import com.cecd.sdk.thrift.RpcService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TFramedTransport;
@@ -101,7 +102,7 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
 
     private static InvocationHandler handler = new InvocationHandler() {
 
-        public Object invoke(Object proxy, Method method, Object[] args) throws CeRpcException {
+        public Object invoke(Object proxy, Method method, Object[] args) throws CeRpcException, JsonProcessingException {
 
             Class<?>[] classes = proxy.getClass().getInterfaces();
             String className = classes[0].getName();
@@ -148,11 +149,11 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
             }
             // 协议要和服务端一致
             TProtocol protocol = new TBinaryProtocol(transport);
-
+            ObjectMapper objectMapper = new ObjectMapper();
             RpcService.Client client = new RpcService.Client(protocol);
             try {
                 transport.open();
-                result = client.callRpc(classpath, method.getName(), JSONObject.toJSONString(args), JSONObject.toJSONString(extraData));
+                result = client.callRpc(classpath, method.getName(), objectMapper.writeValueAsString(args), objectMapper.writeValueAsString(extraData));
                 transport.close();
             } catch (Exception e) {
                 LOGGER.info("rpc faild:" + e.getMessage());
@@ -169,8 +170,8 @@ public abstract class RpcModuleAbstract implements RpcModuleIf  {
             if (null == result.getData()) {
                 return null;
             }
-            //return mapper.readValue(result.getData(), (Class)type);
-            return JSONObject.parseObject(result.getData(), type);
+            return objectMapper.readValue(result.getData(), (Class)type);
+            //return JSONObject.parseObject(result.getData(), type);
         }
     };
 
