@@ -55,6 +55,8 @@ public class RpcTest {
             ObjectMapper objectMapper = new ObjectMapper();
             System.out.println(objectMapper.writeValueAsString(arglist));
             arglist = objectMapper.readValue(objectMapper.writeValueAsString(arglist), ArrayList.class);
+            arglist.add(1, "bbbbb");
+            System.out.println(arglist.get(1));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
