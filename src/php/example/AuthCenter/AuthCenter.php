@@ -7,14 +7,9 @@
  */
 namespace Cecd\Sdk\Rpc\AuthCenter;
 
-use Thrift\CeCd\Sdk\Core\Services\RpcModuleIf;
 use Cecd\Sdk\Rpc\RpcModuleTrait;
+use Thrift\CeCd\Sdk\Core\Services\RpcModuleIf;
 
-/**
- * Class AuthCenter
- * @package Cecd\Sdk\Rpc\AuthCenter
- * @property \Cecd\Sdk\Rpc\AuthCenter\Libraries\AccountLib $AccountLib
- */
 class AuthCenter implements RpcModuleIf
 {
     use RpcModuleTrait;
@@ -22,4 +17,6 @@ class AuthCenter implements RpcModuleIf
     private $serviceId = 1006;
 
     private $config_key = 'rpc.auth-center';
+
+    public \Cecd\Sdk\Rpc\AuthCenter\Libraries\AccountLib $AccountLib;
 }

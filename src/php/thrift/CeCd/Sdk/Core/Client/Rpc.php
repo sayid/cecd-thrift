@@ -80,13 +80,13 @@ class Rpc
                     case "array"://顺序数组
                         $extraData['parameterTypes'][] = "Array";
                         break;
-                    case "object"://高级对应java的jsonobject对象，map等字典统一用这种方式
+                    case "object"://高级对应java的HashMap对象，map等字典统一用这种方式
                         if ($pos = strpos($method->getDocComment(), $parameter->getName())) {
                             $str = substr($method->getDocComment(), 0, $pos - 2);
                             $paramType = trim(substr($str, strrpos($str, "@param") + 7));
                         }
                         if (empty($paramType) || ! $paramType) {
-                            $paramType = "JSONObject";
+                            $paramType = "HashMap";
                         }
                         $extraData['parameterTypes'][] = $paramType;
                         break;
