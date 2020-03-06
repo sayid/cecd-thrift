@@ -81,7 +81,9 @@ public class RpcServiceImpl implements RpcService.Iface {
                     if (type.contains(".")) {
                         //如果类型是一个实体类，则需要转换成对应的
                         argsTypes[index] = Class.forName(type);
-                        argsObj.add(index, objectMapper.readValue(objectMapper.writeValueAsString(argsObj.get(index)), argsTypes[index]));
+                        String oldArg = objectMapper.writeValueAsString(argsObj.get(index));
+                        argsObj.set(index, objectMapper.readValue(oldArg, argsTypes[index]));
+                        //argsObj.add(index, objectMapper.readValue(oldArg, argsTypes[index]));
                     } else {
                         //只允许基础类型
                         responseData.setCode(1000);
