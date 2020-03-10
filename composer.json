@@ -2,10 +2,10 @@
     "name": "cecd/thrift",
     "description": "thrift java/php rpc files",
     "type": "library",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "require": {
         "php": ">=7.2",
-        "apache/thrift" : "0.12.0"
+        "apache/thrift" : "0.13.0"
     },
     "require-dev": {
 
