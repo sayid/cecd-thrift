@@ -13,8 +13,8 @@
     <description>cd sdk for Spring Boot</description>
     <distributionManagement>
         <repository>
-            <id>release</id>
-            <url>http://122.14.223.158:8082/nexus/content/repositories/releases</url>
+            <id>cecd-sdk</id>
+            <url>http://nexus.300.cn:8081/nexus/content/repositories/cecd-sdk</url>
         </repository>
     </distributionManagement>
 
