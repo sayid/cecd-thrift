@@ -157,18 +157,23 @@ class Rpc
         $method = null;
         if (!app()->offsetExists($this->rpcClass)) {
             $reflectionClass = new \ReflectionClass($this->rpcClass);
-
-            $comment = $reflectionClass->getDocComment();
-            $pos_start = strpos($comment, "@classpath(");
-            if (!$pos_start) {
-                throw \Exception("请设置rpc类中的classpath");
+            if (version_compare(PHP_VERSION, "8") < 0) {
+                //PHP8以下
+                $comment = $reflectionClass->getDocComment();
+                $pos_start = strpos($comment, "@classpath(");
+                if (!$pos_start) {
+                    throw \Exception("请设置rpc类中的classpath");
+                }
+                $pos_start += 11;
+                $pos_end = strpos($comment, ")", $pos_start);
+                if (!$pos_end) {
+                    throw \Exception("请设置rpc类中的classpath");
+                }
+                $classpath = substr($comment, $pos_start, $pos_end - $pos_start);
+            } else {
+                //php8以上，使用注解
+                $reflectionClass->getAttributes();
             }
-            $pos_start += 11;
-            $pos_end = strpos($comment, ")", $pos_start);
-            if (!$pos_end) {
-                throw \Exception("请设置rpc类中的classpath");
-            }
-            $classpath = substr($comment, $pos_start, $pos_end - $pos_start);
             app()->offsetSet($this->rpcClass, $classpath);
             foreach ($reflectionClass->getMethods() as $methodRow) {
                 app()->offsetSet($this->rpcClass.$methodRow->getName(), $methodRow);
