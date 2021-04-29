@@ -133,7 +133,11 @@ public class RpcServiceImpl implements RpcService.Iface {
                 if (responseData.getCode() == 0) {
                     Object data = null;
                     try {
-                        data = m.invoke(rpcServiceInterface, argsObj);
+                        if (argsObj.size() == 1) {
+                            data = m.invoke(rpcServiceInterface, argsObj.get(0));
+                        } else {
+                            data = m.invoke(rpcServiceInterface, argsObj);
+                        }
                         System.out.println("result is " + data);
                         responseData.setCode(0);
                         responseData.setData(objectMapper.writeValueAsString(data));

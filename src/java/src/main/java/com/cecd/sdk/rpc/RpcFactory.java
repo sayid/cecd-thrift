@@ -47,7 +47,7 @@ public class RpcFactory {
      */
     public static void setEnvironment(Environment newEnvironment) {
         environment = newEnvironment;
-        LOGGER.info("environment config init");
+        LOGGER.info("rpc environment config init");
     }
 
     public static Environment getEnvironment() {
