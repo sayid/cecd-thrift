@@ -11,6 +11,7 @@ use Thrift\CeCd\Sdk\Core\Services\RpcInterface;
  * @package Cecd\Sdk\Rpc\Product\Services
  * @classpath(com.cecd.project.product.service.CategoryServiceImpl)
  */
+#[ServerClass(com.cecd.project.product.service.CategoryServiceImpl)]
 interface CategoryServiceImpl extends RpcInterface
 {
     public function getList(int $offset, int $limit) : array;
@@ -19,5 +20,6 @@ interface CategoryServiceImpl extends RpcInterface
      * @param object $arg
      * @return array
      */
+    #[ServerArgType(object)]
     public function testMap(object $arg) : object;
 }
