@@ -1,0 +1,6 @@
+server:
+  thrift: #thrift线程池配置
+    enabled: true
+    port: 8090 #监听的端口
+    min-thread-pool: 1  #线程池最小线程数
+    max-thread-pool: 5 #线程池最大线程数
