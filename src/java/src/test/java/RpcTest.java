@@ -1,12 +1,10 @@
-import com.cecd.sdk.examples.testcenter.TestCenter;
-import com.cecd.sdk.examples.testcenter.TestService;
-import com.cecd.sdk.examples.usercenter.UserCenter;
-import com.cecd.sdk.examples.usercenter.dto.CompanyInfoDTO;
-import com.cecd.sdk.examples.usercenter.entity.Member;
-import com.cecd.sdk.examples.usercenter.rpcs.CompanyLibRpc;
-import com.cecd.sdk.examples.usercenter.rpcs.MemberLibRpc;
-import com.cecd.sdk.rpc.RpcFactory;
-import com.cecd.sdk.rpc.exceptions.CeRpcException;
+import com.xmi01.thriftrpc.examples.testcenter.TestCenter;
+import com.xmi01.thriftrpc.examples.testcenter.TestService;
+import com.xmi01.thriftrpc.examples.usercenter.UserCenter;
+import com.xmi01.thriftrpc.examples.usercenter.entity.Member;
+import com.xmi01.thriftrpc.examples.usercenter.rpcs.MemberLibRpc;
+import com.xmi01.thriftrpc.rpc.RpcFactory;
+import com.xmi01.thriftrpc.rpc.exceptions.CeRpcException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -61,17 +59,5 @@ public class RpcTest {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-    }
-
-
-    @Test
-    public void userCenter() {
-        UserCenter userCenter = new UserCenter();
-        CompanyLibRpc companyLibRpc = userCenter.getRpc(CompanyLibRpc.class);
-        userCenter.setHost("10.32.15.112").setPort(32399).setTimeout(10000);
-        //userCenter.setHost("192.168.4.5").setPort(82).setTimeout(10000);
-        CompanyInfoDTO companyInfoDTO = companyLibRpc.getByCompanyId(367);
-        System.out.println(companyInfoDTO.getCode());
-        System.out.println(companyInfoDTO.getData().getRegisterDomain());
     }
 }

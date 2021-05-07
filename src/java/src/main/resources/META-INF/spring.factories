@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cecd.sdk.rpc.RpcBeanFactory,com.cecd.sdk.rpc.RpcServiceImpl
+  com.xmi01.thriftrpc.rpc.RpcBeanFactory,com.xmi01.thriftrpc.rpc.RpcServiceImpl,com.xmi01.thriftrpc.rpc.RpcServerRun

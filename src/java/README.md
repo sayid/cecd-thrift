@@ -29,7 +29,7 @@ public class Main {
 ```aidl
 package com.cecd.sdk.examples.testcenter;
 
-import com.cecd.sdk.rpc.RpcDoc;
+import RpcDoc;
 
 //对应服务端具体的业务类
 @RpcDoc("com.cecd.sdk.examples.servers.test")
@@ -46,7 +46,7 @@ public interface TestService {
 package com.cecd.sdk.examples.servers;
 
 import java.util.Map;
-import com.cecd.sdk.examples.testcenter.TestService;
+import TestService;
 
 public class Test implements TestService{
 
@@ -64,10 +64,10 @@ public class Test implements TestService{
 
 package com.cecd.sdk.examples.testcenter;
 
-import com.cecd.sdk.examples.RpcClientIntercepterTest;
-import com.cecd.sdk.rpc.RpcDoc;
-import com.cecd.sdk.rpc.RpcFactory;
-import com.cecd.sdk.rpc.RpcModuleAbstract;
+import RpcClientIntercepterTest;
+import RpcDoc;
+import RpcFactory;
+import RpcModuleAbstract;
 
 
 public class TestCenter extends RpcModuleAbstract {
@@ -96,8 +96,8 @@ public class TestCenter extends RpcModuleAbstract {
 六、发起调用
 ```aidl
 
-import com.cecd.sdk.examples.testcenter.TestCenter;
-import com.cecd.sdk.examples.testcenter.TestService;
+import TestCenter;
+import TestService;
 
 
 TestCenter testCenter = new TestCenter();
