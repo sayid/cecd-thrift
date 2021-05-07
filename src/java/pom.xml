@@ -11,12 +11,6 @@
 
     <name>ce sdk</name>
     <description>cd sdk for Spring Boot</description>
-    <distributionManagement>
-        <repository>
-            <id>release</id>
-            <url>http://122.14.223.158:8082/nexus/content/repositories/releases</url>
-        </repository>
-    </distributionManagement>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
