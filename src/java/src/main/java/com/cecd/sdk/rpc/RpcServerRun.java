@@ -1,5 +1,4 @@
-package com.xmi01.thriftrpc.rpc;
-
+package com.cecd.sdk.rpc;
 import com.xmi01.thriftrpc.thrift.RpcService;
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TBinaryProtocol;

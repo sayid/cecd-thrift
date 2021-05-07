@@ -1,4 +1,4 @@
-package com.xmi01.thriftrpc.rpc;
+package com.cecd.sdk.rpc;
 
 /**
  * 所有要暴露的service需要继承此接口

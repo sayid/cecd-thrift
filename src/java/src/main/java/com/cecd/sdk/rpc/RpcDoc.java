@@ -1,4 +1,4 @@
-package com.xmi01.thriftrpc.rpc;
+package com.cecd.sdk.rpc;
 
 import java.lang.annotation.*;
 
