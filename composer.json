@@ -4,8 +4,8 @@
     "type": "library",
     "version": "0.1.3",
     "require": {
-        "php": ">=7.4",
-        "apache/thrift" : "0.13.0"
+        "php": ">=7.4 || ^8.0",
+        "apache/thrift" : "0.14.2"
     },
     "require-dev": {
 
